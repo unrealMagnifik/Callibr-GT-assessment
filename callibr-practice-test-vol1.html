@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Callibr Practice Test Vol. 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0d0f0e;
+  --bg2: #141614;
+  --bg3: #1a1d1a;
+  --border: #252825;
+  --accent: #b8f060;
+  --accent2: #60d4f0;
+  --accent-dim: rgba(184,240,96,0.12);
+  --accent2-dim: rgba(96,212,240,0.12);
+  --text: #e8ede8;
+  --text2: #8a9688;
+  --text3: #556053;
+  --red: #f06060;
+  --red-dim: rgba(240,96,96,0.12);
+  --yellow: #f0d060;
+  --mono: 'Space Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+  --r: 6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── SCREEN SYSTEM ── */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ── GRID NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b8f060' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── REGISTRATION SCREEN ── */
+#screen-reg {
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+.reg-wrap {
+  width: 100%;
+  max-width: 520px;
+}
+.logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 48px;
+}
+.logo-icon {
+  width: 36px; height: 36px;
+  background: var(--accent);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-icon svg { width: 20px; height: 20px; }
+.logo-text {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+.logo-text span { color: var(--accent); }
+
+.reg-header { margin-bottom: 36px; }
+.reg-header h1 {
+  font-family: var(--mono);
+  font-size: clamp(22px, 5vw, 30px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.reg-header h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+.reg-header p {
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.field { margin-bottom: 20px; }
+.field label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.field input, .field select {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.15s;
+  appearance: none;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--accent);
+}
+.field input::placeholder { color: var(--text3); }
+.field select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a9688' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.test-summary {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px;
+  margin: 28px 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.summary-item { text-align: center; }
+.summary-val {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  display: block;
+}
+.summary-lbl {
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tracks-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.track-chip {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.track-chip-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.track-chip-text { font-size: 13px; color: var(--text2); }
+.track-chip-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  margin-left: auto;
+}
+
+.btn-primary {
+  width: 100%;
+  background: var(--accent);
+  color: #0d0f0e;
+  border: none;
+  border-radius: var(--r);
+  padding: 14px 24px;
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+.btn-secondary {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 10px 20px;
+  font-family: var(--mono);
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); }
+
+.disclaimer {
+  font-size: 12px;
+  color: var(--text3);
+  text-align: center;
+  margin-top: 16px;
+  line-height: 1.5;
+}
+
+/* ── TEST SCREEN ── */
+#screen-test {
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.test-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13,15,14,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.topbar-logo {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+.topbar-progress-wrap { flex: 1; }
+.topbar-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.progress-bar-outer {
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-bar-inner {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.topbar-timer {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent2);
+  flex-shrink: 0;
+  min-width: 56px;
+  text-align: right;
+}
+.topbar-timer.warn { color: var(--yellow); }
+.topbar-timer.danger { color: var(--red); animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+.test-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 36px 24px 60px;
+}
+
+.q-track-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.q-difficulty-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-left: 8px;
+}
+
+.q-number {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.q-passage {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent2);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.75;
+}
+
+.q-text {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.55;
+  margin-bottom: 28px;
+}
+
+.options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.option-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px 18px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.option-btn:disabled { cursor: default; }
+.option-btn.selected { border-color: var(--accent); background: var(--accent-dim); }
+.option-btn.correct { border-color: var(--accent); background: var(--accent-dim); }
+.option-btn.wrong { border-color: var(--red); background: var(--red-dim); }
+.option-btn.reveal-correct { border-color: var(--accent); background: var(--accent-dim); }
+
+.opt-letter {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--text3);
+}
+.option-btn.selected .opt-letter { background: var(--accent); border-color: var(--accent); color: #0d0f0e; }
+.option-btn.correct .opt-letter { background: var(--accent); border-color: var(--accent); color: #0d0f0e; }
+.option-btn.wrong .opt-letter { background: var(--red); border-color: var(--red); color: #fff; }
+.option-btn.reveal-correct .opt-letter { background: var(--accent); border-color: var(--accent); color: #0d0f0e; }
+
+.explanation-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px;
+  margin-bottom: 24px;
+  animation: slideIn 0.2s ease;
+  display: none;
+}
+.explanation-box.show { display: block; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+.exp-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.exp-icon {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+.exp-icon.correct { background: var(--accent); color: #0d0f0e; }
+.exp-icon.wrong { background: var(--red); color: #fff; }
+.exp-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.exp-label.correct { color: var(--accent); }
+.exp-label.wrong { color: var(--red); }
+.exp-text {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+.q-nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.btn-next {
+  background: var(--accent);
+  color: #0d0f0e;
+  border: none;
+  border-radius: var(--r);
+  padding: 12px 28px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  display: none;
+}
+.btn-next:hover { opacity: 0.88; }
+.btn-next.show { display: block; }
+.q-skip {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text3);
+  cursor: pointer;
+  background: none;
+  border: none;
+  letter-spacing: 0.05em;
+  padding: 4px;
+  text-decoration: underline;
+}
+.q-skip:hover { color: var(--text2); }
+
+/* ── RESULTS SCREEN ── */
+#screen-results {
+  align-items: center;
+  padding: 40px 20px 80px;
+  position: relative;
+  z-index: 1;
+}
+.results-wrap {
+  width: 100%;
+  max-width: 700px;
+}
+
+.results-hero {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.score-ring-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.score-ring {
+  position: relative;
+  width: 160px;
+  height: 160px;
+}
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring-bg { fill: none; stroke: var(--bg3); stroke-width: 10; }
+.score-ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 440;
+  stroke-dashoffset: 440;
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1);
+}
+.score-ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.score-big {
+  font-family: var(--mono);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.score-denom {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text3);
+}
+.results-name {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.results-meta {
+  font-size: 14px;
+  color: var(--text2);
+}
+
+.track-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.track-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px;
+}
+.track-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.track-card-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+.track-card-score {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+.track-bar-outer {
+  height: 4px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.track-bar-inner {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+.track-card-correct {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.chart-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
+  margin-bottom: 28px;
+}
+.section-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 20px;
+}
+
+/* Profile Card */
+.profile-card {
+  background: linear-gradient(135deg, var(--bg2) 0%, #141f14 100%);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.profile-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(184,240,96,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.profile-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.profile-card-id {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+}
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(184,240,96,0.3);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+.profile-card-name {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.profile-card-role {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+.profile-card-level {
+  display: inline-block;
+  background: var(--accent2-dim);
+  border: 1px solid rgba(96,212,240,0.25);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.profile-scores {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+.profile-score-item { text-align: center; }
+.profile-score-val {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  display: block;
+}
+.profile-score-track {
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.profile-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.profile-footer-brand {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text3);
+}
+.profile-footer-brand span { color: var(--accent); }
+.profile-footer-date {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+}
+
+.results-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn-copy {
+  flex: 1;
+  min-width: 140px;
+  background: var(--bg2);
+  color: var(--accent2);
+  border: 1px solid rgba(96,212,240,0.3);
+  border-radius: var(--r);
+  padding: 12px 20px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-copy:hover { background: var(--accent2-dim); }
+
+/* ── TRACK COLORS ── */
+.track-numerical { --tcolor: #b8f060; }
+.track-verbal { --tcolor: #60d4f0; }
+.track-abstract { --tcolor: #f0d060; }
+.track-english { --tcolor: #f090c0; }
+
+/* ── MOBILE ── */
+@media (max-width: 560px) {
+  .meta-grid { grid-template-columns: 1fr; }
+  .test-summary { grid-template-columns: repeat(2,1fr); }
+  .tracks-preview { grid-template-columns: 1fr; }
+  .track-results { grid-template-columns: 1fr; }
+  .profile-scores { grid-template-columns: repeat(2,1fr); }
+  .test-topbar { padding: 0 14px; gap: 12px; }
+  .test-body { padding: 24px 16px 60px; }
+  .topbar-logo { font-size: 11px; }
+  .topbar-timer { font-size: 14px; }
+}
+
+/* ── TIMEOUT OVERLAY ── */
+.timeout-overlay {
+  position: fixed; inset: 0;
+  background: rgba(13,15,14,0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  display: none;
+}
+.timeout-overlay.show { display: flex; }
+.timeout-box {
+  text-align: center;
+  max-width: 400px;
+  padding: 40px;
+}
+.timeout-icon { font-size: 48px; margin-bottom: 16px; }
+.timeout-title {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.timeout-sub { color: var(--text2); margin-bottom: 28px; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.3s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ REGISTRATION ═══ -->
+<div id="screen-reg" class="screen active">
+  <div class="reg-wrap fade-up">
+    <div class="logo-mark">
+      <div class="logo-icon">
+        <svg viewBox="0 0 20 20" fill="none">
+          <rect x="2" y="2" width="7" height="7" rx="1" fill="#0d0f0e"/>
+          <rect x="11" y="2" width="7" height="7" rx="1" fill="#0d0f0e"/>
+          <rect x="2" y="11" width="7" height="7" rx="1" fill="#0d0f0e"/>
+          <rect x="14" y="14" width="4" height="4" rx="0.5" fill="#0d0f0e"/>
+        </svg>
+      </div>
+      <div class="logo-text">CALLI<span>BR</span></div>
+    </div>
+
+    <div class="reg-header">
+      <h1>Practice Test <em>Vol. 1</em></h1>
+      <p>100 verified questions across 4 tracks. Complete this test to receive a raw score and shareable verified profile card.</p>
+    </div>
+
+    <div class="test-summary">
+      <div class="summary-item"><span class="summary-val">100</span><span class="summary-lbl">Questions</span></div>
+      <div class="summary-item"><span class="summary-val">60</span><span class="summary-lbl">Minutes</span></div>
+      <div class="summary-item"><span class="summary-val">4</span><span class="summary-lbl">Tracks</span></div>
+      <div class="summary-item"><span class="summary-val">Raw</span><span class="summary-lbl">Score</span></div>
+    </div>
+
+    <div class="tracks-preview">
+      <div class="track-chip">
+        <div class="track-chip-dot" style="background:#b8f060"></div>
+        <span class="track-chip-text">Numerical Reasoning</span>
+        <span class="track-chip-count">30Q</span>
+      </div>
+      <div class="track-chip">
+        <div class="track-chip-dot" style="background:#60d4f0"></div>
+        <span class="track-chip-text">Verbal Reasoning</span>
+        <span class="track-chip-count">25Q</span>
+      </div>
+      <div class="track-chip">
+        <div class="track-chip-dot" style="background:#f0d060"></div>
+        <span class="track-chip-text">Abstract Reasoning</span>
+        <span class="track-chip-count">25Q</span>
+      </div>
+      <div class="track-chip">
+        <div class="track-chip-dot" style="background:#f090c0"></div>
+        <span class="track-chip-text">English Proficiency</span>
+        <span class="track-chip-count">20Q</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="reg-name" placeholder="Your full name" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="reg-email" placeholder="your@email.com" autocomplete="off">
+    </div>
+    <div class="meta-grid">
+      <div class="field">
+        <label>Current Role / Job Title</label>
+        <input type="text" id="reg-role" placeholder="e.g. Business Analyst">
+      </div>
+      <div class="field">
+        <label>Experience Level <em style="color:var(--text3);font-style:normal;font-size:10px">(self-declared)</em></label>
+        <select id="reg-level">
+          <option value="">Select level</option>
+          <option value="Graduate">Graduate (0–2 yrs)</option>
+          <option value="Senior">Senior (3–6 yrs)</option>
+          <option value="Manager">Manager (5–10 yrs)</option>
+          <option value="Consultant">Consultant (any)</option>
+          <option value="Veteran">Veteran (10+ yrs)</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="startTest()">BEGIN ASSESSMENT →</button>
+    <p class="disclaimer">Your profile card will be generated at the end. Experience level is self-declared and not verified by Callibr.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ TEST ═══ -->
+<div id="screen-test" class="screen">
+  <div class="test-topbar">
+    <div class="topbar-logo">CALLIBR</div>
+    <div class="topbar-progress-wrap">
+      <div class="topbar-progress-label">
+        <span id="prog-label">Question 1 of 100</span>
+        <span id="prog-track-label">Numerical Reasoning</span>
+      </div>
+      <div class="progress-bar-outer">
+        <div class="progress-bar-inner" id="progress-bar" style="width:1%"></div>
+      </div>
+    </div>
+    <div class="topbar-timer" id="timer-display">60:00</div>
+  </div>
+
+  <div class="test-body">
+    <div id="q-track-badge" class="q-track-badge"></div>
+    <div id="q-number" class="q-number"></div>
+    <div id="q-passage" class="q-passage" style="display:none"></div>
+    <div id="q-text" class="q-text"></div>
+    <div id="options-list" class="options-list"></div>
+    <div id="explanation-box" class="explanation-box"></div>
+    <div class="q-nav">
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">NEXT →</button>
+      <button class="q-skip" id="btn-skip" onclick="skipQuestion()">skip question</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ RESULTS ═══ -->
+<div id="screen-results" class="screen">
+  <div class="results-wrap fade-up">
+    <div class="results-hero">
+      <div class="score-ring-wrap">
+        <div class="score-ring">
+          <svg viewBox="0 0 160 160" width="160" height="160">
+            <circle class="score-ring-bg" cx="80" cy="80" r="70"/>
+            <circle class="score-ring-fill" id="ring-fill" cx="80" cy="80" r="70"/>
+          </svg>
+          <div class="score-ring-text">
+            <span class="score-big" id="res-score">—</span>
+            <span class="score-denom">/ 100</span>
+          </div>
+        </div>
+      </div>
+      <div class="results-name" id="res-name">—</div>
+      <div class="results-meta" id="res-meta">—</div>
+    </div>
+
+    <div class="track-results" id="track-results"></div>
+
+    <div class="chart-section">
+      <div class="section-title">Performance by Track</div>
+      <canvas id="results-chart" height="220"></canvas>
+    </div>
+
+    <div class="section-title" style="margin-bottom:14px">Your Verified Profile Card</div>
+    <div class="profile-card" id="profile-card">
+      <div class="profile-card-header">
+        <div class="profile-card-id" id="pc-id">CALLIBR-TEST-V1</div>
+        <div class="verified-badge">✓ VERIFIED</div>
+      </div>
+      <div class="profile-card-name" id="pc-name">—</div>
+      <div class="profile-card-role" id="pc-role">—</div>
+      <div class="profile-card-level" id="pc-level">—</div>
+      <div class="profile-scores" id="pc-scores"></div>
+      <div class="profile-footer">
+        <div class="profile-footer-brand">CALLI<span>BR</span> · Practice Test Vol. 1</div>
+        <div class="profile-footer-date" id="pc-date">—</div>
+      </div>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn-primary" style="flex:1" onclick="copyProfile()">COPY PROFILE CARD</button>
+      <button class="btn-copy" onclick="retakeTest()">RETAKE TEST</button>
+    </div>
+    <p class="disclaimer" style="margin-top:16px">Raw score only — percentile rankings unlock when Callibr reaches scale. Visit callibr.co to build your verified talent profile.</p>
+  </div>
+</div>
+
+<!-- Timeout Overlay -->
+<div class="timeout-overlay" id="timeout-overlay">
+  <div class="timeout-box fade-up">
+    <div class="timeout-icon">⏱</div>
+    <div class="timeout-title">Time's Up</div>
+    <p class="timeout-sub">Your 60 minutes are complete. Your results are being calculated based on questions answered.</p>
+    <button class="btn-primary" onclick="showResults()">VIEW MY RESULTS →</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════ QUESTION BANK ═══════════════════════
+const QUESTIONS = [
+// ── NUMERICAL REASONING (30Q) ──
+{id:1,track:"numerical",difficulty:"easy",
+question:"A consulting firm's Q1 revenue: Strategy division ₦4.2M, Operations division ₦2.1M, Technology division ₦3.8M. What is the firm's total Q1 revenue?",
+options:["₦9.8M","₦10.1M","₦10.4M","₦9.5M"],answer:1,
+explanation:"Add all three divisions: ₦4.2M + ₦2.1M + ₦3.8M = ₦10.1M. Common trap: dropping the Technology figure gives ₦6.3M, or misreading ₦3.8M as ₦2.8M gives ₦9.1M."},
+
+{id:2,track:"numerical",difficulty:"easy",
+question:"A project team processed 450 client tickets in January and 580 tickets in February. By what percentage did ticket volume increase?",
+options:["22.4%","28.9%","31.1%","25.6%"],answer:1,
+explanation:"% change = (580 − 450) / 450 × 100 = 130/450 × 100 = 28.9%. Trap A (22.4%) comes from dividing by the new value: 130/580. Always divide by the original value when calculating percentage change."},
+
+{id:3,track:"numerical",difficulty:"medium",
+question:"A SaaS startup had ARR of ₦2.4M at the start of Year 1. It grew at 12% per year compounded. What is the ARR at the end of Year 3?",
+options:["₦3.36M","₦3.37M","₦3.22M","₦3.48M"],answer:1,
+explanation:"ARR = 2.4 × (1.12)³ = 2.4 × 1.404928 = ₦3.37M. Trap A (₦3.36M) rounds 1.12³ too early. Trap C (₦3.22M) only applies two years of growth. Trap D (₦3.48M) uses simple interest: 2.4 + 3(0.12×2.4)."},
+
+{id:4,track:"numerical",difficulty:"medium",
+question:"A fund manager allocates 60% of a portfolio to equities yielding 8% and 40% to bonds yielding 5%. What is the portfolio's weighted average yield?",
+options:["6.5%","6.8%","7.0%","6.2%"],answer:1,
+explanation:"Weighted yield = (0.60 × 8%) + (0.40 × 5%) = 4.8% + 2.0% = 6.8%. Trap A (6.5%) uses equal weighting: (8+5)/2 = 6.5%. Trap D (6.2%) reverses the weights."},
+
+{id:5,track:"numerical",difficulty:"easy",
+question:"An analyst manages two datasets. Dataset A has x records. Dataset B has (x + 5) records. Together they hold 63 records. How many records are in Dataset A?",
+options:["24","29","34","31"],answer:1,
+explanation:"x + (x + 5) = 63 → 2x + 5 = 63 → 2x = 58 → x = 29. Dataset A has 29 records, Dataset B has 34. Trap A (24) solves 2x = 48 incorrectly. Trap C (34) gives Dataset B's count."},
+
+{id:6,track:"numerical",difficulty:"easy",
+question:"A data migration task requires 8 engineers working 15 days to complete. If 2 engineers are reassigned, how many days will the remaining 6 need to finish the same task?",
+options:["17 days","18 days","20 days","22 days"],answer:2,
+explanation:"Total work = 8 × 15 = 120 engineer-days. With 6 engineers: 120 ÷ 6 = 20 days. Trap B (18 days): incorrectly scales as 15 × 8/7. Inverse proportion: fewer workers = more days proportionally."},
+
+{id:7,track:"numerical",difficulty:"medium",
+question:"Three sales teams close deals in a quarter: Team A closes 200 deals at avg ₦85K, Team B closes 150 deals at ₦72K, Team C closes 100 deals at ₦90K. What is the overall average deal value?",
+options:["₦82.33K","₦82.00K","₦81.78K","₦83.11K"],answer:2,
+explanation:"Weighted average = (200×85 + 150×72 + 100×90) / 450 = (17,000 + 10,800 + 9,000) / 450 = 36,800 / 450 = ₦81.78K. Trap A (₦82.33K) uses simple average (85+72+90)/3. Weight by deal count, not team count."},
+
+{id:8,track:"numerical",difficulty:"hard",
+question:"A warehouse manager uses the EOQ model. Annual demand = 5,000 units, ordering cost = ₦200 per order, holding cost = ₦0.50 per unit per year. What is the Economic Order Quantity?",
+options:["1,414 units","2,000 units","1,000 units","2,828 units"],answer:1,
+explanation:"EOQ = √(2DS/H) = √(2 × 5,000 × 200 / 0.5) = √4,000,000 = 2,000 units. Trap A (1,414): forgets the factor of 2 — √(5,000×200/0.5) = √2,000,000. Trap D (2,828): doubles the correct answer."},
+
+{id:9,track:"numerical",difficulty:"hard",
+question:"Fund X: annual return 12%, risk-free rate 3%, standard deviation of returns 8%. What is the Sharpe Ratio?",
+options:["1.00","1.50","1.125","0.875"],answer:2,
+explanation:"Sharpe = (Return − Risk-free) / Std dev = (12% − 3%) / 8% = 9/8 = 1.125. Trap A (1.00) uses return/std without subtracting risk-free. Trap B (1.50) incorrectly subtracts risk-free from std: 9/6."},
+
+{id:10,track:"numerical",difficulty:"hard",
+question:"A capital project requires ₦50,000 investment and generates cash flows of ₦20,000 (Yr 1), ₦25,000 (Yr 2), ₦30,000 (Yr 3). Discount rate: 10%. What is the NPV?",
+options:["₦11,382","₦25,000","₦9,842","₦13,150"],answer:0,
+explanation:"NPV = −50,000 + 20,000/1.1 + 25,000/1.21 + 30,000/1.331 = −50,000 + 18,182 + 20,661 + 22,539 = ₦11,382. Trap B (₦25,000) adds undiscounted flows: −50K + 75K. Always apply the correct discount factor (1+r)ⁿ per year."},
+
+{id:11,track:"numerical",difficulty:"hard",
+question:"Safety Stock = Z × σ × √LT. Service level Z = 1.65, daily demand std dev σ = 200 units, lead time LT = 4 days. What is the safety stock?",
+options:["330 units","660 units","1,320 units","528 units"],answer:1,
+explanation:"Safety Stock = 1.65 × 200 × √4 = 1.65 × 200 × 2 = 660 units. Trap A (330) uses LT/2 instead of √LT. Trap C (1,320) uses LT directly instead of √LT. The formula uses the square root of lead time, not lead time itself."},
+
+{id:12,track:"numerical",difficulty:"medium",
+question:"Three project sprints have cycles of 12, 18, and 24 days. They all began together on Day 0. How many days later do all three sprints next start simultaneously?",
+options:["Day 72","Day 48","Day 36","Day 144"],answer:0,
+explanation:"Find LCM(12, 18, 24). LCM(12,18) = 36; LCM(36,24) = 72. All three align every 72 days after their common start. Trap B (48): LCM of only two cycles. Trap D (144): product of 12×12. LCM gives the first common cycle."},
+
+{id:13,track:"numerical",difficulty:"medium",
+question:"To calculate an employee's annual bonus amount: Statement A — the employee scored 87/100 this quarter. Statement B — Grade B employees receive a 15% salary bonus if score > 85. Is the exact bonus amount (in ₦) determinable from these statements?",
+options:["Statement A alone is sufficient","Statement B alone is sufficient","Both statements together are sufficient","Neither statement is sufficient — base salary is missing"],answer:3,
+explanation:"Both statements together confirm the employee qualifies (score 87 > 85) and gives the rate (15%). However, we still need the employee's base salary to calculate the naira amount. Neither A nor B nor both together provide base salary. The exact bonus amount cannot be determined."},
+
+{id:14,track:"numerical",difficulty:"medium",
+question:"A retailer increases prices by 20% in Q1, then reduces prices by 20% in Q2. What is the net percentage change in price compared to the original?",
+options:["+4%","0%","−4%","−2%"],answer:2,
+explanation:"Start: P. After +20%: P × 1.20. After −20%: P × 1.20 × 0.80 = P × 0.96. Net = −4%. Trap B (0%) is the classic error — assuming equal percentage increases and decreases cancel. They don't; the decrease applies to a larger base."},
+
+{id:15,track:"numerical",difficulty:"medium",
+question:"A factory needs 12 workers × 8 hrs/day × 6 days to complete an order. The client now needs it done in 4.5 days at the same 8 hrs/day. How many workers are required?",
+options:["14","16","18","20"],answer:1,
+explanation:"Total work = 12 × 8 × 6 = 576 person-hours. Required workers = 576 / (8 × 4.5) = 576 / 36 = 16. Trap A (14) uses 9 days. Trap C (18) rounds up unnecessarily. Trap D (20) miscalculates total hours."},
+
+{id:16,track:"numerical",difficulty:"easy",
+question:"A compliance audit covers 40% of all company branches. Within audited branches, 30% had documentation errors. What percentage of all branches had documentation errors?",
+options:["70%","12%","30%","40%"],answer:1,
+explanation:"Errors across all branches = 30% of 40% = 0.30 × 0.40 = 12%. Trap A (70%) adds the percentages. Trap C (30%) only considers the audited subset. Nested percentages always multiply, never add."},
+
+{id:17,track:"numerical",difficulty:"easy",
+question:"A startup has fixed costs of ₦120,000/month, sells each product for ₦45, and incurs ₦27 variable cost per unit. How many units must be sold monthly to break even?",
+options:["4,444","6,667","2,667","8,000"],answer:1,
+explanation:"Break-even = FC / (Price − VC) = 120,000 / (45 − 27) = 120,000 / 18 = 6,667 units. Trap A (4,444): divides FC by VC. Trap C (2,667): divides FC by price. Contribution margin = Price minus Variable Cost."},
+
+{id:18,track:"numerical",difficulty:"easy",
+question:"A division reports revenue of ₦840,000 and cost of goods sold of ₦560,000. What is the gross profit margin?",
+options:["66.7%","33.3%","40.0%","28.6%"],answer:1,
+explanation:"Gross profit = ₦840K − ₦560K = ₦280K. Margin = 280,000 / 840,000 × 100 = 33.3%. Trap A (66.7%) divides COGS by revenue: 560/840. Gross margin is always profit divided by revenue, not cost by revenue."},
+
+{id:19,track:"numerical",difficulty:"easy",
+question:"A company invoices a US client $3,400. The exchange rate is ₦1,520 per $1. What is the invoice value in Naira?",
+options:["₦4,896,000","₦5,168,000","₦4,420,000","₦5,440,000"],answer:1,
+explanation:"₦ value = $3,400 × 1,520 = ₦5,168,000. Trap A (₦4,896,000) uses rate ₦1,440. Trap C divides instead of multiplies. Multiply foreign currency by the rate (local per foreign unit)."},
+
+{id:20,track:"numerical",difficulty:"medium",
+question:"A company held 18% market share in a ₦450M market. The market grew to ₦520M. The company's revenue grew 15% from its prior position. What is the company's new market share? (Round to 1 decimal place.)",
+options:["20.7%","18.0%","17.9%","15.6%"],answer:2,
+explanation:"Company's old revenue = 18% × 450M = ₦81M. New revenue = 81M × 1.15 = ₦93.15M. New share = 93.15/520 = 17.9%. Trap A (20.7%) applies 15% growth to the share itself: 18% × 1.15. Market share is not the same as revenue growth."},
+
+{id:21,track:"numerical",difficulty:"easy",
+question:"A company's server infrastructure costs ₦2.4M annually. The finance department uses 35% of total server capacity. What is the finance department's allocated annual cost?",
+options:["₦720,000","₦840,000","₦960,000","₦780,000"],answer:1,
+explanation:"Allocated cost = ₦2,400,000 × 0.35 = ₦840,000. Trap A (₦720,000) uses 30%. Trap C (₦960,000) uses 40%. Simple percentage application: multiply total cost by the usage proportion."},
+
+{id:22,track:"numerical",difficulty:"hard",
+question:"A fund grew from ₦8.1M to ₦12.4M over 4 years. What is the Compound Annual Growth Rate (CAGR), rounded to 1 decimal place?",
+options:["11.2%","12.5%","10.8%","13.3%"],answer:0,
+explanation:"CAGR = (12.4/8.1)^(1/4) − 1 = (1.5309)^0.25 − 1 = 1.1123 − 1 = 11.23% ≈ 11.2%. Trap B (12.5%) uses simple growth: (12.4−8.1)/(8.1×4) = 4.3/32.4. CAGR requires the fractional exponent 1/n."},
+
+{id:23,track:"numerical",difficulty:"easy",
+question:"A company invests ₦240,000 in a new software system expected to save ₦60,000 per year. What is the simple payback period?",
+options:["3 years","4 years","5 years","6 years"],answer:1,
+explanation:"Payback = Investment / Annual savings = ₦240,000 / ₦60,000 = 4 years. Trap A (3 years) and Trap C (5 years) result from using wrong savings or investment figures. Payback = investment ÷ annual net cash flow."},
+
+{id:24,track:"numerical",difficulty:"easy",
+question:"A retail chain has Cost of Goods Sold of ₦3.6M and average inventory value of ₦600,000. What is the inventory turnover ratio?",
+options:["4x","6x","8x","5x"],answer:1,
+explanation:"Inventory Turnover = COGS / Average Inventory = ₦3,600,000 / ₦600,000 = 6x. Trap A (4x) uses wrong inventory. Trap C (8x) uses revenue instead of COGS. Always use COGS, not revenue, for inventory turnover."},
+
+{id:25,track:"numerical",difficulty:"hard",
+question:"A ₦500,000 loan at 12% p.a. compounded monthly for 3 years. EMI = P·r·(1+r)ⁿ / ((1+r)ⁿ−1), r = monthly rate, n = months. What is the approximate monthly EMI?",
+options:["₦13,889","₦16,607","₦18,333","₦14,422"],answer:1,
+explanation:"r = 12%/12 = 1% = 0.01; n = 36. (1.01)³⁶ = 1.4308. EMI = 500,000 × 0.01 × 1.4308 / (1.4308 − 1) = 7,154 / 0.4308 ≈ ₦16,607. Trap A (₦13,889) = 500,000/36 — ignores interest entirely. Trap C uses annual rate as monthly rate."},
+
+{id:26,track:"numerical",difficulty:"medium",
+question:"National unemployment fell from 8% to 5%. A journalist writes it 'fell by 37.5%'. An economist writes it 'fell by 3 percentage points'. Which statement(s) are numerically correct?",
+options:["Only the journalist","Only the economist","Both statements are correct","Neither statement is correct"],answer:2,
+explanation:"Both are correct but measure different things. Percentage points: 8% − 5% = 3pp (absolute). Percentage change: (8−5)/8 × 100 = 37.5% (relative). This is a critical distinction in business and policy analysis."},
+
+{id:27,track:"numerical",difficulty:"medium",
+question:"A consulting team of 5 consultants each works 6 hours/day on client deliverables. A new client needs 45 consultant-hours delivered in one day. How many additional consultants must be hired?",
+options:["2 more","3 more","4 more","5 more"],answer:1,
+explanation:"Current capacity = 5 × 6 = 30 hours/day. Needed = 45 hours/day. Total consultants needed = ⌈45/6⌉ = ⌈7.5⌉ = 8. Additional = 8 − 5 = 3. Trap A (2 more): 7 consultants × 6 = 42 hrs < 45. Must round up because partial consultants aren't possible."},
+
+{id:28,track:"numerical",difficulty:"easy",
+question:"Three partners share ₦240,000 annual profit in the ratio 3:5:2. How much does the partner with the largest share receive?",
+options:["₦72,000","₦96,000","₦120,000","₦80,000"],answer:2,
+explanation:"Total ratio = 3+5+2 = 10. Largest share (ratio 5) = 5/10 × ₦240,000 = ₦120,000. Trap A (₦72,000) = ratio 3 share: 3/10 × 240K. Trap B (₦96,000) = ratio 4 share. Trap D (₦80,000) divides equally: 240K/3."},
+
+{id:29,track:"numerical",difficulty:"medium",
+question:"A company's taxable income is ₦3.8M. Tax rates: first ₦2M at 20%, amount above ₦2M at 30%. What is the total tax liability?",
+options:["₦760,000","₦940,000","₦1,140,000","₦570,000"],answer:1,
+explanation:"Tax on first ₦2M: ₦2M × 20% = ₦400,000. Remainder: ₦3.8M − ₦2M = ₦1.8M. Tax on remainder: ₦1.8M × 30% = ₦540,000. Total = ₦400,000 + ₦540,000 = ₦940,000. Trap A (₦760,000) applies 20% to all income. Trap C (₦1,140,000) applies 30% to all income."},
+
+{id:30,track:"numerical",difficulty:"hard",
+question:"A savings account offers 18% annual interest compounded monthly. What is the Effective Annual Rate (EAR)?",
+options:["18.00%","19.56%","19.25%","18.81%"],answer:1,
+explanation:"EAR = (1 + r/n)ⁿ − 1 = (1 + 0.18/12)¹² − 1 = (1.015)¹² − 1 = 1.1956 − 1 = 19.56%. Trap A (18.00%) confuses nominal and effective rates. Monthly compounding always pushes EAR above nominal. Trap C (19.25%) uses quarterly compounding (n=4)."},
+
+// ── VERBAL REASONING (25Q) ──
+// PASSAGE A
+{id:31,track:"verbal",difficulty:"easy",
+passage:"Callibr's verified talent marketplace operates on a skills-first model. Candidates complete standardised assessments and receive a raw score, which is displayed on their shareable verified profile. Unlike traditional recruitment platforms, Callibr does not use CV screening as the primary filter. Employers can search and filter candidates based on assessment performance across specific tracks. The platform currently offers assessments in four tracks: Numerical Reasoning, Verbal Reasoning, Abstract Reasoning, and English Proficiency.",
+question:"Callibr uses CV screening as its primary hiring filter.",
+options:["True","False","Cannot Say"],answer:1,
+explanation:"False. The passage explicitly states Callibr does NOT use CV screening as the primary filter — it is skills-first, based on assessments. The word 'unlike' directly signals a contrast with platforms that do use CV screening."},
+
+{id:32,track:"verbal",difficulty:"easy",
+passage:"Callibr's verified talent marketplace operates on a skills-first model. Candidates complete standardised assessments and receive a raw score, which is displayed on their shareable verified profile. Unlike traditional recruitment platforms, Callibr does not use CV screening as the primary filter. Employers can search and filter candidates based on assessment performance across specific tracks. The platform currently offers assessments in four tracks: Numerical Reasoning, Verbal Reasoning, Abstract Reasoning, and English Proficiency.",
+question:"Employers on Callibr can filter candidates by their assessment scores.",
+options:["True","False","Cannot Say"],answer:0,
+explanation:"True. The passage directly states: 'Employers can search and filter candidates based on assessment performance across specific tracks.' This is an unambiguous statement supporting the claim."},
+
+{id:33,track:"verbal",difficulty:"medium",
+passage:"Callibr's verified talent marketplace operates on a skills-first model. Candidates complete standardised assessments and receive a raw score, which is displayed on their shareable verified profile. Unlike traditional recruitment platforms, Callibr does not use CV screening as the primary filter. Employers can search and filter candidates based on assessment performance across specific tracks. The platform currently offers assessments in four tracks: Numerical Reasoning, Verbal Reasoning, Abstract Reasoning, and English Proficiency.",
+question:"Callibr plans to introduce a fifth assessment track within the next year.",
+options:["True","False","Cannot Say"],answer:2,
+explanation:"Cannot Say. The passage only describes what currently exists — four tracks. It makes no mention of future plans, expansion timelines, or new track development. Never infer intentions or future plans from a statement about current state."},
+
+{id:34,track:"verbal",difficulty:"easy",
+passage:"Callibr's verified talent marketplace operates on a skills-first model. Candidates complete standardised assessments and receive a raw score, which is displayed on their shareable verified profile. Unlike traditional recruitment platforms, Callibr does not use CV screening as the primary filter. Employers can search and filter candidates based on assessment performance across specific tracks. The platform currently offers assessments in four tracks: Numerical Reasoning, Verbal Reasoning, Abstract Reasoning, and English Proficiency.",
+question:"A candidate's Callibr profile displays their assessment score.",
+options:["True","False","Cannot Say"],answer:0,
+explanation:"True. The passage explicitly states candidates receive 'a raw score, which is displayed on their shareable verified profile.' The statement is directly and clearly supported."},
+
+// PASSAGE B
+{id:35,track:"verbal",difficulty:"easy",
+passage:"Remote work adoption accelerated dramatically following global disruptions in 2020. A 2023 industry survey found that 67% of knowledge workers now work remotely at least three days per week. Productivity studies have yielded mixed results — some organisations report a 13% productivity gain among remote employees, while others cite challenges with collaboration and onboarding. Companies that implemented structured remote work policies before 2020 reported significantly smoother transitions. Mandatory return-to-office mandates have faced resistance, with some surveys indicating that 42% of workers would consider leaving their jobs if required to return full-time.",
+question:"The majority of knowledge workers now work remotely at least three days per week.",
+options:["True","False","Cannot Say"],answer:0,
+explanation:"True. 67% constitutes a majority (more than 50%). The passage cites this figure directly from a 2023 industry survey. Majority = more than half."},
+
+{id:36,track:"verbal",difficulty:"medium",
+passage:"Remote work adoption accelerated dramatically following global disruptions in 2020. A 2023 industry survey found that 67% of knowledge workers now work remotely at least three days per week. Productivity studies have yielded mixed results — some organisations report a 13% productivity gain among remote employees, while others cite challenges with collaboration and onboarding. Companies that implemented structured remote work policies before 2020 reported significantly smoother transitions. Mandatory return-to-office mandates have faced resistance, with some surveys indicating that 42% of workers would consider leaving their jobs if required to return full-time.",
+question:"Remote work always leads to increased productivity.",
+options:["True","False","Cannot Say"],answer:1,
+explanation:"False. The passage explicitly states that productivity studies have 'yielded mixed results' — some show gains, others show challenges. The word 'always' makes the statement a universal claim that the evidence directly contradicts."},
+
+{id:37,track:"verbal",difficulty:"medium",
+passage:"Remote work adoption accelerated dramatically following global disruptions in 2020. A 2023 industry survey found that 67% of knowledge workers now work remotely at least three days per week. Productivity studies have yielded mixed results — some organisations report a 13% productivity gain among remote employees, while others cite challenges with collaboration and onboarding. Companies that implemented structured remote work policies before 2020 reported significantly smoother transitions. Mandatory return-to-office mandates have faced resistance, with some surveys indicating that 42% of workers would consider leaving their jobs if required to return full-time.",
+question:"Less than half of surveyed workers would consider leaving over a full return-to-office mandate.",
+options:["True","False","Cannot Say"],answer:0,
+explanation:"True. 42% would consider leaving. 42% is less than 50% (less than half). The statement correctly characterises the data: fewer than half — but still 42%, a substantial minority — said they would consider leaving."},
+
+{id:38,track:"verbal",difficulty:"hard",
+passage:"Remote work adoption accelerated dramatically following global disruptions in 2020. A 2023 industry survey found that 67% of knowledge workers now work remotely at least three days per week. Productivity studies have yielded mixed results — some organisations report a 13% productivity gain among remote employees, while others cite challenges with collaboration and onboarding. Companies that implemented structured remote work policies before 2020 reported significantly smoother transitions. Mandatory return-to-office mandates have faced resistance, with some surveys indicating that 42% of workers would consider leaving their jobs if required to return full-time.",
+question:"Organisations with structured remote work policies in place before 2020 had better post-disruption transition outcomes.",
+options:["True","False","Cannot Say"],answer:0,
+explanation:"True. The passage states 'Companies that implemented structured remote work policies before 2020 reported significantly smoother transitions.' 'Smoother transitions' = better outcomes. This is directly supported by the passage."},
+
+// PASSAGE C
+{id:39,track:"verbal",difficulty:"easy",
+passage:"Microfinance institutions (MFIs) provide small loans to entrepreneurs who lack access to traditional banking. In sub-Saharan Africa, MFIs have disbursed over $8 billion in loans since 2010, with an average loan size of $450. Loan repayment rates across the sector average 94%, significantly higher than traditional unsecured consumer lending. Critics argue that interest rates — often between 25% and 60% annually — are exploitative. Proponents counter that these rates reflect the genuine cost of serving dispersed, low-income populations and that the alternative for many borrowers is informal moneylenders charging even higher rates.",
+question:"MFIs in sub-Saharan Africa have lower repayment rates than traditional unsecured consumer lending.",
+options:["True","False","Cannot Say"],answer:1,
+explanation:"False. The passage states MFI repayment rates average 94%, which is 'significantly higher than traditional unsecured consumer lending.' The statement directly contradicts the passage."},
+
+{id:40,track:"verbal",difficulty:"medium",
+passage:"Microfinance institutions (MFIs) provide small loans to entrepreneurs who lack access to traditional banking. In sub-Saharan Africa, MFIs have disbursed over $8 billion in loans since 2010, with an average loan size of $450. Loan repayment rates across the sector average 94%, significantly higher than traditional unsecured consumer lending. Critics argue that interest rates — often between 25% and 60% annually — are exploitative. Proponents counter that these rates reflect the genuine cost of serving dispersed, low-income populations and that the alternative for many borrowers is informal moneylenders charging even higher rates.",
+question:"All critics of MFIs believe interest rates should be capped by government regulation.",
+options:["True","False","Cannot Say"],answer:2,
+explanation:"Cannot Say. The passage states critics argue rates 'are exploitative,' but says nothing about what policy solutions critics advocate. Government caps are not mentioned. Never assume a policy position from a stated criticism."},
+
+{id:41,track:"verbal",difficulty:"medium",
+passage:"Microfinance institutions (MFIs) provide small loans to entrepreneurs who lack access to traditional banking. In sub-Saharan Africa, MFIs have disbursed over $8 billion in loans since 2010, with an average loan size of $450. Loan repayment rates across the sector average 94%, significantly higher than traditional unsecured consumer lending. Critics argue that interest rates — often between 25% and 60% annually — are exploitative. Proponents counter that these rates reflect the genuine cost of serving dispersed, low-income populations and that the alternative for many borrowers is informal moneylenders charging even higher rates.",
+question:"Some MFI borrowers might pay even higher interest rates if they used informal moneylenders instead.",
+options:["True","False","Cannot Say"],answer:0,
+explanation:"True. Proponents state 'the alternative for many borrowers is informal moneylenders charging even higher rates.' 'Some' is appropriately qualified — the passage says 'many,' which encompasses some."},
+
+{id:42,track:"verbal",difficulty:"hard",
+passage:"Microfinance institutions (MFIs) provide small loans to entrepreneurs who lack access to traditional banking. In sub-Saharan Africa, MFIs have disbursed over $8 billion in loans since 2010, with an average loan size of $450. Loan repayment rates across the sector average 94%, significantly higher than traditional unsecured consumer lending. Critics argue that interest rates — often between 25% and 60% annually — are exploitative. Proponents counter that these rates reflect the genuine cost of serving dispersed, low-income populations and that the alternative for many borrowers is informal moneylenders charging even higher rates.",
+question:"The total number of MFI loans disbursed in sub-Saharan Africa since 2010 exceeds 17 million.",
+options:["True","False","Cannot Say"],answer:0,
+explanation:"True. Calculate: $8,000,000,000 ÷ $450 = approximately 17,777,778 loans. This exceeds 17 million. This tests your ability to derive numerical conclusions from passage data — a common hard verbal reasoning task."},
+
+// PASSAGE D
+{id:43,track:"verbal",difficulty:"easy",
+passage:"Corporate governance refers to the system of rules, practices, and processes by which a company is directed and controlled. Strong governance frameworks align the interests of company management with those of shareholders and other stakeholders. The board of directors holds primary accountability for governance. In listed companies, independent non-executive directors (INEDs) are required to form at least one-third of the board in many jurisdictions. Poor governance has been linked to major corporate failures including financial fraud, environmental disasters, and supply chain crises.",
+question:"The board of directors is primarily accountable for corporate governance.",
+options:["True","False","Cannot Say"],answer:0,
+explanation:"True. The passage directly states: 'The board of directors holds primary accountability for governance.' This is an unambiguous, direct statement of fact."},
+
+{id:44,track:"verbal",difficulty:"medium",
+passage:"Corporate governance refers to the system of rules, practices, and processes by which a company is directed and controlled. Strong governance frameworks align the interests of company management with those of shareholders and other stakeholders. The board of directors holds primary accountability for governance. In listed companies, independent non-executive directors (INEDs) are required to form at least one-third of the board in many jurisdictions. Poor governance has been linked to major corporate failures including financial fraud, environmental disasters, and supply chain crises.",
+question:"Independent non-executive directors must form a majority of the board in all listed companies globally.",
+options:["True","False","Cannot Say"],answer:1,
+explanation:"False. Two reasons: (1) The passage says 'at least one-third,' not a majority. (2) It says 'many jurisdictions,' not all. Both qualifiers — degree and universality — make the statement false."},
+
+{id:45,track:"verbal",difficulty:"medium",
+passage:"Corporate governance refers to the system of rules, practices, and processes by which a company is directed and controlled. Strong governance frameworks align the interests of company management with those of shareholders and other stakeholders. The board of directors holds primary accountability for governance. In listed companies, independent non-executive directors (INEDs) are required to form at least one-third of the board in many jurisdictions. Poor governance has been linked to major corporate failures including financial fraud, environmental disasters, and supply chain crises.",
+question:"Shareholders are the only stakeholders whose interests governance frameworks aim to align with management.",
+options:["True","False","Cannot Say"],answer:1,
+explanation:"False. The passage says governance aligns management interests with 'shareholders and other stakeholders' — explicitly including parties beyond shareholders. The word 'only' in the statement makes it false."},
+
+// PASSAGE E
+{id:46,track:"verbal",difficulty:"easy",
+passage:"Artificial intelligence is increasingly deployed in financial services for credit scoring, fraud detection, and algorithmic trading. Traditional credit scoring relied on limited datasets such as repayment history and income. AI-based models can incorporate thousands of alternative data points including utility payments, mobile phone usage patterns, and even social media activity. Regulators in several markets have raised concerns about algorithmic bias — where AI systems may systematically disadvantage certain demographic groups. The EU AI Act, passed in 2024, classifies credit scoring AI as 'high risk,' requiring transparency, human oversight, and regular auditing.",
+question:"Traditional credit scoring models used fewer data points than AI-based models.",
+options:["True","False","Cannot Say"],answer:0,
+explanation:"True. The passage contrasts traditional models using 'limited datasets such as repayment history and income' with AI models incorporating 'thousands of alternative data points.' Fewer = limited datasets vs. thousands."},
+
+{id:47,track:"verbal",difficulty:"medium",
+passage:"Artificial intelligence is increasingly deployed in financial services for credit scoring, fraud detection, and algorithmic trading. Traditional credit scoring relied on limited datasets such as repayment history and income. AI-based models can incorporate thousands of alternative data points including utility payments, mobile phone usage patterns, and even social media activity. Regulators in several markets have raised concerns about algorithmic bias — where AI systems may systematically disadvantage certain demographic groups. The EU AI Act, passed in 2024, classifies credit scoring AI as 'high risk,' requiring transparency, human oversight, and regular auditing.",
+question:"The EU AI Act requires AI-based credit scoring to operate without human intervention.",
+options:["True","False","Cannot Say"],answer:1,
+explanation:"False. The EU AI Act explicitly requires 'human oversight' as a condition for high-risk credit scoring AI. Full automation without human intervention would directly contradict this requirement."},
+
+{id:48,track:"verbal",difficulty:"hard",
+passage:"Artificial intelligence is increasingly deployed in financial services for credit scoring, fraud detection, and algorithmic trading. Traditional credit scoring relied on limited datasets such as repayment history and income. AI-based models can incorporate thousands of alternative data points including utility payments, mobile phone usage patterns, and even social media activity. Regulators in several markets have raised concerns about algorithmic bias — where AI systems may systematically disadvantage certain demographic groups. The EU AI Act, passed in 2024, classifies credit scoring AI as 'high risk,' requiring transparency, human oversight, and regular auditing.",
+question:"AI credit scoring systems have been shown to be completely free of bias.",
+options:["True","False","Cannot Say"],answer:1,
+explanation:"False. The passage states regulators have raised concerns about 'algorithmic bias — where AI systems may systematically disadvantage certain demographic groups.' This directly contradicts a claim of being bias-free."},
+
+// PASSAGE F
+{id:49,track:"verbal",difficulty:"medium",
+passage:"Supply chain resilience has become a strategic priority following disruptions between 2020 and 2023. Many organisations had optimised purely for efficiency, maintaining minimal inventory under Just-In-Time (JIT) principles. JIT reduces holding costs but leaves companies vulnerable when supply chains are disrupted. In response, firms have adopted dual-sourcing (using at least two suppliers per critical input), nearshoring (moving production closer to end markets), and strategic inventory buffers. These resilience measures increase operating costs. Research found that resilient supply chains cost 4–6% more to operate but experienced 25–40% less revenue disruption during crises.",
+question:"Just-In-Time inventory management reduces a company's vulnerability to supply chain disruptions.",
+options:["True","False","Cannot Say"],answer:1,
+explanation:"False. The passage explicitly states JIT 'leaves companies vulnerable when supply chains are disrupted.' JIT's strength is efficiency; its weakness is exactly the vulnerability the statement claims it reduces."},
+
+{id:50,track:"verbal",difficulty:"medium",
+passage:"Supply chain resilience has become a strategic priority following disruptions between 2020 and 2023. Many organisations had optimised purely for efficiency, maintaining minimal inventory under Just-In-Time (JIT) principles. JIT reduces holding costs but leaves companies vulnerable when supply chains are disrupted. In response, firms have adopted dual-sourcing (using at least two suppliers per critical input), nearshoring (moving production closer to end markets), and strategic inventory buffers. These resilience measures increase operating costs. Research found that resilient supply chains cost 4–6% more to operate but experienced 25–40% less revenue disruption during crises.",
+question:"Nearshoring involves moving production closer to end markets.",
+options:["True","False","Cannot Say"],answer:0,
+explanation:"True. The passage defines nearshoring in parentheses as precisely 'moving production closer to end markets.' This is a direct quote from the passage."},
+
+{id:51,track:"verbal",difficulty:"hard",
+passage:"Supply chain resilience has become a strategic priority following disruptions between 2020 and 2023. Many organisations had optimised purely for efficiency, maintaining minimal inventory under Just-In-Time (JIT) principles. JIT reduces holding costs but leaves companies vulnerable when supply chains are disrupted. In response, firms have adopted dual-sourcing (using at least two suppliers per critical input), nearshoring (moving production closer to end markets), and strategic inventory buffers. These resilience measures increase operating costs. Research found that resilient supply chains cost 4–6% more to operate but experienced 25–40% less revenue disruption during crises.",
+question:"A company with a resilient supply chain will always avoid revenue disruption during a crisis.",
+options:["True","False","Cannot Say"],answer:1,
+explanation:"False. The passage says resilient chains experienced '25–40% less revenue disruption' — less, not zero. 'Always avoid' is an absolute that the passage directly contradicts — disruption still occurs, just at a reduced rate."},
+
+{id:52,track:"verbal",difficulty:"hard",
+passage:"Supply chain resilience has become a strategic priority following disruptions between 2020 and 2023. Many organisations had optimised purely for efficiency, maintaining minimal inventory under Just-In-Time (JIT) principles. JIT reduces holding costs but leaves companies vulnerable when supply chains are disrupted. In response, firms have adopted dual-sourcing (using at least two suppliers per critical input), nearshoring (moving production closer to end markets), and strategic inventory buffers. These resilience measures increase operating costs. Research found that resilient supply chains cost 4–6% more to operate but experienced 25–40% less revenue disruption during crises.",
+question:"Dual-sourcing requires a company to use a minimum of two suppliers for each critical input.",
+options:["True","False","Cannot Say"],answer:0,
+explanation:"True. The passage defines dual-sourcing as 'using at least two suppliers per critical input.' 'At least two' and 'a minimum of two' are equivalent statements. This is directly supported."},
+
+{id:53,track:"verbal",difficulty:"hard",
+passage:"Supply chain resilience has become a strategic priority following disruptions between 2020 and 2023. Many organisations had optimised purely for efficiency, maintaining minimal inventory under Just-In-Time (JIT) principles. JIT reduces holding costs but leaves companies vulnerable when supply chains are disrupted. In response, firms have adopted dual-sourcing (using at least two suppliers per critical input), nearshoring (moving production closer to end markets), and strategic inventory buffers. These resilience measures increase operating costs. Research found that resilient supply chains cost 4–6% more to operate but experienced 25–40% less revenue disruption during crises.",
+question:"The additional cost of supply chain resilience measures is always worth the investment.",
+options:["True","False","Cannot Say"],answer:2,
+explanation:"Cannot Say. The passage provides data on costs (+4–6%) and benefit (25–40% less disruption) but makes no judgment about whether the trade-off is universally 'worth it.' Whether it is worthwhile depends on company-specific factors not addressed in the passage."},
+
+// PASSAGE G (Q54-55)
+{id:54,track:"verbal",difficulty:"medium",
+passage:"Design thinking is a problem-solving methodology centred on understanding users, challenging assumptions, and redefining problems to identify alternative solutions. It involves five phases: Empathise, Define, Ideate, Prototype, and Test. Unlike traditional linear problem-solving, design thinking is iterative — teams may cycle through phases multiple times. Design thinking has been applied beyond product development to organisational challenges, policy design, and service delivery. Critics argue that design thinking can be superficial when applied without genuine user research, and that its outputs may be heavily influenced by facilitator bias.",
+question:"Design thinking is a linear, sequential problem-solving process.",
+options:["True","False","Cannot Say"],answer:1,
+explanation:"False. The passage explicitly states design thinking is 'iterative — teams may cycle through phases multiple times' and that it is 'unlike traditional linear problem-solving.' The statement directly contradicts the passage."},
+
+{id:55,track:"verbal",difficulty:"hard",
+passage:"Design thinking is a problem-solving methodology centred on understanding users, challenging assumptions, and redefining problems to identify alternative solutions. It involves five phases: Empathise, Define, Ideate, Prototype, and Test. Unlike traditional linear problem-solving, design thinking is iterative — teams may cycle through phases multiple times. Design thinking has been applied beyond product development to organisational challenges, policy design, and service delivery. Critics argue that design thinking can be superficial when applied without genuine user research, and that its outputs may be heavily influenced by facilitator bias.",
+question:"All critics of design thinking believe it should be abandoned in favour of traditional methods.",
+options:["True","False","Cannot Say"],answer:2,
+explanation:"Cannot Say. Critics raise concerns about superficiality and facilitator bias — but the passage says nothing about what critics recommend as alternatives, or that they advocate abandonment. Do not infer prescriptions from criticisms."},
+
+// ── ABSTRACT REASONING (25Q) ──
+{id:56,track:"abstract",difficulty:"easy",
+question:"Number sequence: 2, 4, 8, 16, ___. Each term is double the previous. What is the next term?",
+options:["24","32","18","20"],answer:1,
+explanation:"Geometric sequence with ratio ×2: 2→4→8→16→32. Trap A (24) adds the previous difference (8) instead of doubling. Always identify the operation type (additive vs multiplicative) before extending the sequence."},
+
+{id:57,track:"abstract",difficulty:"easy",
+question:"Letter sequence: A, C, E, G, ___. Each letter skips one letter of the alphabet. What comes next?",
+options:["H","I","J","K"],answer:1,
+explanation:"A(1)→C(3)→E(5)→G(7)→I(9). Each step adds 2 to the alphabetical position. Trap A (H) adds only 1. Trap C (J) adds 3. The pattern is +2 per step."},
+
+{id:58,track:"abstract",difficulty:"easy",
+question:"A 3×3 grid contains numbers 1–9 placed consecutively in reading order (left to right, top to bottom). Row 1: 1, 2, 3. Row 2: 4, 5, 6. Row 3: 7, ?, 9. What is the missing number?",
+options:["6","7","8","10"],answer:2,
+explanation:"Numbers 1–9 fill the grid sequentially. Position (3,2) = 8. Trap A (6) takes the last of Row 2. Trap D (10) extends past the 9-number grid. Sequential filling: 7, 8, 9 complete Row 3."},
+
+{id:59,track:"abstract",difficulty:"easy",
+question:"A right-pointing arrow (→) rotates 90° clockwise with each step. Position 1: → (right). Position 2: ↓ (down). Position 3: ← (left). Position 4: ?",
+options:["→ (right)","↓ (down)","↑ (up)","← (left)"],answer:2,
+explanation:"Each 90° CW rotation: Right→Down→Left→Up. Position 4 = Up (↑). Trap A (right) would be position 5 (full 360°). Trap D (left) was position 3. The four positions cycle: R→D→L→U→R..."},
+
+{id:60,track:"abstract",difficulty:"easy",
+question:"Shape pattern: ○ □ △ ○ □ △ ○ □ ___. The trio (circle, square, triangle) repeats. What is the missing 9th shape?",
+options:["○ (circle)","□ (square)","△ (triangle)","◇ (diamond)"],answer:2,
+explanation:"The pattern cycles every 3 shapes: ○□△ | ○□△ | ○□___. Position 9 = 9 ÷ 3 = remainder 0 = last in cycle = △ (triangle). Trap B (□) would be position 8. Count position within the cycle."},
+
+{id:61,track:"abstract",difficulty:"medium",
+question:"Number sequence: 3, 6, 11, 18, 27, ___. The differences between consecutive terms are increasing odd numbers: 3, 5, 7, 9... What is the next term?",
+options:["37","38","36","40"],answer:1,
+explanation:"Differences: 6−3=3, 11−6=5, 18−11=7, 27−18=9. Next difference = 11 (next odd number). Next term = 27 + 11 = 38. Trap A (37) uses difference 10. Trap C (36) repeats difference 9. Second-order differences increase by 2 each time."},
+
+{id:62,track:"abstract",difficulty:"medium",
+question:"Triangular numbers — the count of dots in equilateral triangular arrangements: Figure 1=1, Figure 2=3, Figure 3=6, Figure 4=10. The nth triangular number = n(n+1)/2. How many units does Figure 5 have?",
+options:["12","13","14","15"],answer:3,
+explanation:"Figure 5 = 5×6/2 = 15. Alternatively, differences: +2, +3, +4, +5 → next is +5: 10+5=15. Trap A (12) adds 2. Trap B (13) adds 3. Trap C (14) adds 4. Each new figure adds one more than the previous difference."},
+
+{id:63,track:"abstract",difficulty:"medium",
+question:"A 3×3 grid must contain exactly one ★, one ●, and one ■ in each row AND each column (like a Latin square). Row 1: ★ ● ■. Row 2: ■ ★ ●. Row 3: ● ■ ?. What fills the missing cell?",
+options:["●","■","★","◆"],answer:2,
+explanation:"Column 3 already has ■ (Row 1) and ● (Row 2). Each symbol must appear once per column, so Column 3, Row 3 = ★. Also verify Row 3: ● ■ ★ — each symbol appears exactly once. ✓"},
+
+{id:64,track:"abstract",difficulty:"medium",
+question:"Fibonacci sequence: 1, 1, 2, 3, 5, 8, 13, ___. Each term = sum of the two preceding terms. What is the next term?",
+options:["18","19","20","21"],answer:3,
+explanation:"8 + 13 = 21. Trap A (18) = 13+5. Trap B (19) and C (20) are arithmetic errors. The Fibonacci rule is strictly: current term = sum of the two immediately preceding terms."},
+
+{id:65,track:"abstract",difficulty:"medium",
+question:"Letter sequence moving backward: Z, X, V, T, R, ___. Each step moves back 2 positions in the alphabet. What comes next?",
+options:["P","Q","O","S"],answer:0,
+explanation:"Z(26)→X(24)→V(22)→T(20)→R(18)→P(16). Subtract 2 each step. R is the 18th letter; 18−2=16=P. Trap B (Q) subtracts 1. Trap C (O) subtracts 3."},
+
+{id:66,track:"abstract",difficulty:"medium",
+question:"A cross-shaped number pattern: the centre value equals the sum of the four surrounding values divided by 2. Centre=10, Top=2, Left=4, Right=6, Bottom=8. Verify: (2+4+6+8)/2=10 ✓. New cross: Top=3, Left=5, Right=7, Bottom=9. What is the centre?",
+options:["10","12","24","18"],answer:1,
+explanation:"Centre = (3+5+7+9)/2 = 24/2 = 12. Trap A (10): previous centre value. Trap C (24): forgets to divide by 2. Trap D (18): sums only three surrounding values. Always sum all four surrounding values, then apply the rule."},
+
+{id:67,track:"abstract",difficulty:"medium",
+question:"A sequence alternates between two operations: +3 then ×2. Starting at 1: 1, (+3)→4, (×2)→8, (+3)→11, (×2)→22, (+3)→25, ___. What is the next term?",
+options:["28","50","27","52"],answer:1,
+explanation:"After 25, the operation is ×2 (alternating: +3, ×2, +3, ×2...). 25 × 2 = 50. Trap A (28) applies +3 again. To track the pattern, mark each step: step 1=+3, step 2=×2, step 3=+3, etc."},
+
+{id:68,track:"abstract",difficulty:"hard",
+question:"A 4×4 magic-like grid: each row sums to 34. Row 1 contains: 16, 3, 2, ?. What is the missing value?",
+options:["11","13","12","15"],answer:1,
+explanation:"Row sum = 34. 16+3+2+? = 34 → 21+? = 34 → ? = 13. Trap A (11): subtracts from 32. Trap C (12): off by 1. Trap D (15): uses wrong row sum. Always check: sum of known values, subtract from target."},
+
+{id:69,track:"abstract",difficulty:"hard",
+question:"A sequence uses the rule: each term = previous term × (previous term − 1). Term 1: 3. Term 2: 3×2=6. Term 3: 6×5=?. What is Term 3?",
+options:["18","24","30","36"],answer:2,
+explanation:"Term 3 = 6 × (6−1) = 6 × 5 = 30. Trap A (18) = 6×3. Trap B (24) = 6×4. The rule is n×(n−1), meaning each term multiplies by one less than itself. 6 multiplied by 5 = 30."},
+
+{id:70,track:"abstract",difficulty:"hard",
+question:"Input→Output table: 1→3, 2→7, 3→13, 4→21. The rule is output = n²+n+1. What is the output when input = 5?",
+options:["29","31","33","27"],answer:1,
+explanation:"n²+n+1: when n=5: 25+5+1=31. Verify pattern: 1+1+1=3✓, 4+2+1=7✓, 9+3+1=13✓, 16+4+1=21✓. Trap A (29) uses n²+n−1. Trap C (33) uses n²+n+3. Find the formula by testing candidate rules."},
+
+{id:71,track:"abstract",difficulty:"easy",
+question:"Paired sequence: (1,2), (3,6), (5,10), (7,?). In each pair, the second number is double the first. The first numbers are odd: 1,3,5,7. What is the missing number?",
+options:["12","14","16","8"],answer:1,
+explanation:"7×2=14. First numbers: 1,3,5,7 (odd numbers). Second: 2,6,10,14 (also a sequence: +4,+4,+4). Both rules confirm 14. Trap A (12) adds 2 to the previous second number incorrectly: 10+2=12."},
+
+{id:72,track:"abstract",difficulty:"easy",
+question:"A sequence moves clockwise around a clock face in steps of 3 hours: 12, 3, 6, 9, ___. What position comes next?",
+options:["12","10","11","6"],answer:0,
+explanation:"12→3→6→9→12 (4 steps of 3 hours = 12 hours, completing a full rotation back to 12). After 9, the next 3-hour step reaches 12 again. The sequence cycles every 4 terms."},
+
+{id:73,track:"abstract",difficulty:"medium",
+question:"A cipher shifts each letter by +3 in the alphabet: 'CAT' → 'FDW'. Using the same shift, what does 'DOG' encode to?",
+options:["GQJ","ERH","GRJ","GRK"],answer:2,
+explanation:"D(4)→G(7), O(15)→R(18), G(7)→J(10). Result: GRJ. Verify: each letter advances by 3 positions. Trap A (GQJ) applies +3 to D and G but +2 to O. Trap B (ERH) uses shift of +1."},
+
+{id:74,track:"abstract",difficulty:"medium",
+question:"A number pyramid: each number equals the sum of the two numbers directly below it. Bottom row: 2, 3, 4. Middle row has two numbers. What is the top number of the pyramid?",
+options:["9","12","10","8"],answer:1,
+explanation:"Bottom: 2, 3, 4. Middle: (2+3)=5, (3+4)=7. Top: 5+7=12. Each level sums adjacent pairs from the level below. Trap A (9) = 2+3+4. Trap C (10) = 3+7 or 5+5. Trap D (8) = 2+3+3."},
+
+{id:75,track:"abstract",difficulty:"hard",
+question:"A sequence adds 4 each step and wraps around at 12 (modulo 12, where 0 becomes 12): 1, 5, 9, 1, 5, 9... Wait — revised: sequence adds 4, wrapping at 10 (subtract 10 if result exceeds 10): 1, 5, 9, 3, 7, 11, ?. After 11, add 4: 15. 15−10=5? No, 15−12=3. Use: wrap at 12, subtract 12. After 11: 11+4=15→15−12=3. But 3 already appeared. This is the pattern cycling. What is the next term after 11?",
+options:["3","5","15","13"],answer:0,
+explanation:"The sequence adds 4 and wraps at 12 (if result exceeds 12, subtract 12). After 11: 11+4=15. 15>12, so 15−12=3. The answer is 3. This is modular arithmetic: the sequence 1,5,9,3,7,11 cycles with period 6 under +4 mod 12."},
+
+{id:76,track:"abstract",difficulty:"hard",
+question:"Shape analogy: Square is to Circle as Triangle is to what? (A square's 4 straight sides become 0 straight sides — a circle. By the same logic of 'removing all straight edges and curving,' what is the curved analogue of a triangle?)",
+options:["Hexagon","Oval","Pentagon","Reuleaux triangle"],answer:3,
+explanation:"A Reuleaux triangle is the curved-sided equivalent of a triangle — it has the same structure as a triangle but with three convex curved arcs instead of straight sides. Just as a circle is a 'rounded square,' a Reuleaux triangle is the rounded/curved analogue of a triangle. It maintains constant width (like a circle) but has triangular symmetry."},
+
+{id:77,track:"abstract",difficulty:"easy",
+question:"Shapes have assigned values: △=3, □=4, ○=5. What is △+□+○?",
+options:["10","11","12","13"],answer:2,
+explanation:"△+□+○ = 3+4+5 = 12. This can also be derived algebraically from pairs: (△+□)=7, (□+○)=9, (△+○)=8. Sum all three pairs = 2(△+□+○) = 24, so △+□+○=12. Trap A (10) miscounts. Trap D (13) adds incorrectly."},
+
+{id:78,track:"abstract",difficulty:"medium",
+question:"Two interleaved sequences: odd positions (1st,3rd,5th,...): 2,4,8 (×2 each time). Even positions (2nd,4th,6th,...): 3,6,12 (×2 each time). Full sequence: 2, 3, 4, 6, 8, 12, ___. What is the 7th term?",
+options:["14","15","16","24"],answer:2,
+explanation:"The 7th position is an odd position (1st,3rd,5th,7th). Odd-position subsequence: 2,4,8,16 (×2 each). The 4th odd-position term = 16. Trap D (24) is the 8th term (next even-position: 12×2=24)."},
+
+{id:79,track:"abstract",difficulty:"hard",
+question:"A 3×3 matrix where each cell = row number × column number. Row 1: 1,2,3. Row 2: 2,4,6. Row 3: 3,6,?. What is the missing cell?",
+options:["6","9","12","7"],answer:1,
+explanation:"Rule: cell(row, col) = row × col. Cell(3,3) = 3×3 = 9. Verify: 3×1=3✓, 3×2=6✓, 3×3=9. Trap A (6) = 3×2. Trap C (12) = 3×4. Consistent application of the multiplication rule."},
+
+{id:80,track:"abstract",difficulty:"hard",
+question:"Shapes are coded as [sides][shade]: unshaded triangle=31, shaded triangle=32, unshaded square=41, shaded square=42, unshaded pentagon=51. What is the code for a shaded hexagon?",
+options:["61","62","63","72"],answer:1,
+explanation:"Code = [number of sides][shade code]. Shade: unshaded=1, shaded=2. Hexagon has 6 sides. Shaded hexagon = 62. Trap A (61) = unshaded hexagon. Trap C (63) invents a third shade code. Trap D (72) uses 7 sides (heptagon)."},
+
+// ── ENGLISH PROFICIENCY (20Q) ──
+{id:81,track:"english",difficulty:"easy",
+question:"Choose the word that best completes the sentence: 'The CEO's decision to restructure the company was _____, as it ultimately doubled revenue within two years.'",
+options:["vindicated","vilified","vacillated","vitiated"],answer:0,
+explanation:"'Vindicated' means proved correct or justified by subsequent events — exactly what happened here. 'Vilified' means to speak ill of. 'Vacillated' means wavered indecisively (a verb, wrong use here). 'Vitiated' means impaired or invalidated."},
+
+{id:82,track:"english",difficulty:"easy",
+question:"Identify the grammatical error: 'Each of the department heads have submitted their quarterly reports on time.'",
+options:["'Each of' should be 'All of'","'have submitted' should be 'has submitted'","'their' should be 'his or her'","No error"],answer:1,
+explanation:"'Each' is a singular indefinite pronoun and always takes a singular verb. 'Each of the department heads HAS submitted' is correct. The prepositional phrase 'of the department heads' doesn't change the subject. Trap C: 'their' as singular is now widely accepted in formal writing."},
+
+{id:83,track:"english",difficulty:"easy",
+question:"Choose the correct word: 'The company must _____ its data privacy policy to comply with new regulations.'",
+options:["revise","revoke","rescind","refute"],answer:0,
+explanation:"'Revise' means to update or amend — appropriate for updating a policy. 'Revoke' and 'rescind' both mean to cancel entirely, not update. 'Refute' means to disprove — irrelevant. The context specifies compliance through updating, not cancellation."},
+
+{id:84,track:"english",difficulty:"easy",
+question:"Which sentence is punctuated correctly?",
+options:["The board approved; the merger, subject to regulatory review.","The board approved the merger, subject to regulatory review.","The board approved, the merger subject, to regulatory review.","The board approved the merger subject, to regulatory review."],answer:1,
+explanation:"Option B is correct. 'Subject to regulatory review' is a participial phrase modifying 'merger,' set off by a trailing comma. Option A wrongly uses a semicolon mid-sentence before a dependent phrase. Options C and D fragment the clause incorrectly."},
+
+{id:85,track:"english",difficulty:"medium",
+question:"What does 'PERFUNCTORY' mean in this context: 'The manager gave the proposal only a perfunctory review before approving it.'",
+options:["thorough and detailed","cursory and done without care","highly critical","enthusiastic and engaged"],answer:1,
+explanation:"'Perfunctory' describes something done as routine obligation with minimal effort or care — synonymous with 'cursory.' Trap A (thorough) is the direct opposite. Trap C (critical) implies detailed scrutiny, also opposite. Context clue: 'only a perfunctory' implies insufficiency."},
+
+{id:86,track:"english",difficulty:"medium",
+question:"Identify the error: 'Neither the marketing team nor the sales team have met their targets this quarter.'",
+options:["'Neither...nor' should be 'Either...or'","'have met' should be 'has met' — the verb agrees with the nearer subject","'their' should be 'its'","No error"],answer:1,
+explanation:"With 'neither...nor,' the verb agrees with the subject nearest to it (the proximity rule). 'Sales team' (singular) is nearest, so: 'has met.' If the nearer subject were plural, you'd use 'have.' Trap A: 'neither...nor' is correct for negating two subjects."},
+
+{id:87,track:"english",difficulty:"medium",
+question:"Select the best word: 'Despite three rounds of funding, the startup remained _____ — unable to cover its operating costs.'",
+options:["solvent","insolvent","buoyant","liquid"],answer:1,
+explanation:"'Insolvent' means unable to pay debts or cover costs — exactly matching the context. 'Solvent' is the opposite. 'Buoyant' means thriving. 'Liquid' refers to cash availability, not an inability to cover costs. Context defines meaning: 'unable to cover costs' = insolvent."},
+
+{id:88,track:"english",difficulty:"medium",
+question:"Which sentence uses 'affect' and 'effect' correctly?",
+options:["The new policy will effect employee morale significantly.","The new policy will affect employee morale significantly.","The affects of the policy were significant.","Management must effect a positive moral."],answer:1,
+explanation:"'Affect' (verb) = to influence. 'Effect' (noun) = result. Option B: 'will affect morale' — correct verb use. Option A: 'effect morale' is nonsensical (though 'to effect change' = to bring about change, is valid, 'effect morale' is not). Option C: 'affects' (noun form) doesn't exist. Option D: 'moral' should be 'morale.'"},
+
+{id:89,track:"english",difficulty:"medium",
+question:"Which option best improves this sentence: 'Due to the fact that the project was behind schedule, the team was required to work overtime.'",
+options:["Because the project was behind schedule, the team had to work overtime.","Owing to the reality that the project schedule was delayed, overtime was required by the team.","The project being behind schedule necessitated the undertaking of overtime work.","The sentence is already concise and correct."],answer:0,
+explanation:"'Due to the fact that' = 'because.' 'Was required to work' (passive) → 'had to work' (direct). Option A fixes both issues concisely. Option B is equally wordy. Option C uses awkward nominalization. In business writing, prefer direct, concise expression."},
+
+{id:90,track:"english",difficulty:"hard",
+question:"Identify the subtle error: 'The committee comprised of five members, all of whom were senior partners.'",
+options:["'comprised of' should be 'composed of' or 'comprised' alone","'whom' should be 'who' after 'all of'","'were' should be 'was' to agree with 'committee'","No error"],answer:0,
+explanation:"'Comprise' means 'to consist of' and should not take 'of.' Correct: 'The committee comprised five members' OR 'was composed of five members.' 'Comprised of' is a widespread but incorrect usage. 'Whom' after 'of' is correct (object pronoun). 'Committee' may take plural or singular depending on convention."},
+
+{id:91,track:"english",difficulty:"easy",
+question:"Choose the correct form: 'The data _____ been analysed and the results are inconclusive.'",
+options:["have","has","had","having"],answer:0,
+explanation:"'Data' is technically plural (singular: datum) and in formal professional contexts takes a plural verb: 'data have been analysed.' In everyday usage 'data has' is accepted, but formal assessments require the grammatically correct plural form."},
+
+{id:92,track:"english",difficulty:"easy",
+question:"What does 'UBIQUITOUS' mean?",
+options:["Rare and hard to find","Seemingly present everywhere simultaneously","Unique and one-of-a-kind","Changing unpredictably"],answer:1,
+explanation:"'Ubiquitous' means appearing or found everywhere — extremely widespread and commonly encountered. Example: 'Smartphones have become ubiquitous in modern workplaces.' Trap A (rare) is the direct opposite. The word derives from Latin 'ubique' meaning 'everywhere.'"},
+
+{id:93,track:"english",difficulty:"medium",
+question:"Select the word with the opposite meaning to 'TACITURN':",
+options:["Reserved","Loquacious","Reticent","Introverted"],answer:1,
+explanation:"'Taciturn' = habitually silent and uncommunicative. Its antonym is 'loquacious' (extremely talkative). 'Reserved' and 'Reticent' are near-synonyms of taciturn. 'Introverted' describes social energy preference, not communication volume specifically."},
+
+{id:94,track:"english",difficulty:"medium",
+question:"Complete with the correct preposition: 'The auditors were not in a position to comment _____ the accuracy of the financial forecasts.'",
+options:["about","on","over","around"],answer:1,
+explanation:"The standard formal English collocation is 'comment ON.' 'Comment about' is informal. 'Comment over' is non-standard. In professional, legal, and corporate writing, 'comment on' is the correct preposition."},
+
+{id:95,track:"english",difficulty:"medium",
+question:"Identify the error: 'Having reviewed the budget, the decision was made to cut costs.'",
+options:["No error","'Having reviewed the budget' is a dangling modifier — no logical subject performs the action","'Was made' should be 'was taken'","'The decision' should be 'a decision'"],answer:1,
+explanation:"This is a dangling modifier. The participle 'Having reviewed' implies a subject — but the grammatical subject is 'the decision,' which can't review budgets. Corrected: 'Having reviewed the budget, management decided to cut costs.' Participial phrases must attach to a subject that can logically perform the action."},
+
+{id:96,track:"english",difficulty:"hard",
+question:"Choose the option that correctly uses the subjunctive mood: 'The board recommended that the CFO _____ a full audit.'",
+options:["conducts","conducted","conduct","will conduct"],answer:2,
+explanation:"After verbs of recommendation, demand, or suggestion ('recommended that...'), formal English uses the subjunctive — the base form of the verb regardless of subject. 'Recommended that he conduct' (not conducts/conducted/will conduct). This form is required in formal written English."},
+
+{id:97,track:"english",difficulty:"hard",
+question:"Select the sentence that correctly uses a semicolon:",
+options:["The proposal was strong; however, the timeline was unrealistic.","The proposal was strong; but the timeline was unrealistic.","We reviewed; the proposal and found several gaps.","Strong proposals; always include realistic timelines."],answer:0,
+explanation:"Semicolons join two independent clauses. With transitional adverbs like 'however,' the pattern is: [clause]; however, [clause]. Option A is correct. Option B uses a semicolon before 'but' (a coordinating conjunction — use a comma instead). Options C and D break clauses that should not be separated."},
+
+{id:98,track:"english",difficulty:"hard",
+question:"What does 'PERSPICACIOUS' mean in context: 'Her perspicacious assessment of market trends allowed her to advise clients ahead of major shifts.'",
+options:["Overly cautious and hesitant","Having sharp insight and clear judgment","Methodical and procedural","Prone to exaggeration"],answer:1,
+explanation:"'Perspicacious' means having a ready insight into things — sharply perceptive and discerning. Context confirms this: she assessed trends accurately enough to advise ahead of shifts. Not to be confused with 'perspicuous' (clearly expressed, applied to writing)."},
+
+{id:99,track:"english",difficulty:"hard",
+question:"Identify the logical error: 'This consulting firm has worked with over 500 clients; therefore, they are the best choice for your project.'",
+options:["No logical error — experience implies quality","Non sequitur: volume of clients doesn't establish quality of service","The semicolon usage is incorrect","There is a subject-verb agreement error"],answer:1,
+explanation:"This is a non sequitur and an 'appeal to quantity' fallacy. The number of clients (quantity) doesn't logically establish being the best choice (quality). A firm could have 500 poorly-served clients. Strong arguments require evidence of outcomes, not just volume."},
+
+{id:100,track:"english",difficulty:"hard",
+question:"Choose the word that best fits: 'The regulator's report was _____, offering neither clear sanctions nor concrete guidance — leaving firms uncertain about compliance obligations.'",
+options:["unambiguous","incisive","equivocal","prescriptive"],answer:2,
+explanation:"'Equivocal' means open to multiple interpretations; deliberately vague. It perfectly describes a report that offers neither sanctions nor guidance. 'Unambiguous' and 'incisive' mean clear and direct — opposites. 'Prescriptive' means giving clear rules — also opposite. Context clues: 'neither...nor' signals ambiguity."}
+];
+
+// ═══════════════════════ STATE ═══════════════════════
+const STATE = {
+  name: '', email: '', role: '', level: '',
+  current: 0,
+  answers: new Array(100).fill(null), // null=unanswered, index=chosen
+  skipped: new Set(),
+  startTime: null,
+  timerInterval: null,
+  secondsLeft: 3600,
+  answered: false
+};
+
+const TRACK_META = {
+  numerical: { label: 'Numerical Reasoning', color: '#b8f060', total: 30 },
+  verbal:    { label: 'Verbal Reasoning',    color: '#60d4f0', total: 25 },
+  abstract:  { label: 'Abstract Reasoning',  color: '#f0d060', total: 25 },
+  english:   { label: 'English Proficiency', color: '#f090c0', total: 20 }
+};
+
+// ═══════════════════════ REGISTRATION ═══════════════════════
+function startTest() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const role = document.getElementById('reg-role').value.trim();
+  const level = document.getElementById('reg-level').value;
+
+  if (!name || !email || !role || !level) {
+    alert('Please complete all fields before beginning.');
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  STATE.name = name;
+  STATE.email = email;
+  STATE.role = role;
+  STATE.level = level;
+  STATE.startTime = Date.now();
+
+  showScreen('screen-test');
+  startTimer();
+  renderQuestion(0);
+}
+
+// ═══════════════════════ TIMER ═══════════════════════
+function startTimer() {
+  STATE.timerInterval = setInterval(() => {
+    STATE.secondsLeft--;
+    updateTimerDisplay();
+    if (STATE.secondsLeft <= 0) {
+      clearInterval(STATE.timerInterval);
+      document.getElementById('timeout-overlay').classList.add('show');
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(STATE.secondsLeft / 60);
+  const s = STATE.secondsLeft % 60;
+  const el = document.getElementById('timer-display');
+  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.className = 'topbar-timer';
+  if (STATE.secondsLeft <= 300) el.classList.add('warn');
+  if (STATE.secondsLeft <= 60) el.classList.remove('warn'), el.classList.add('danger');
+}
+
+// ═══════════════════════ RENDER QUESTION ═══════════════════════
+function renderQuestion(idx) {
+  if (idx >= QUESTIONS.length) { finishTest(); return; }
+  STATE.current = idx;
+  STATE.answered = false;
+  const q = QUESTIONS[idx];
+  const tm = TRACK_META[q.track];
+
+  // Progress
+  const pct = ((idx + 1) / 100) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = `Question ${idx+1} of 100`;
+  document.getElementById('prog-track-label').textContent = tm.label;
+
+  // Badge
+  const badge = document.getElementById('q-track-badge');
+  badge.style.background = tm.color + '18';
+  badge.style.border = `1px solid ${tm.color}33`;
+  badge.style.color = tm.color;
+  badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:${tm.color};display:inline-block"></span>${tm.label}<span class="q-difficulty-tag">${q.difficulty}</span>`;
+
+  // Number
+  document.getElementById('q-number').textContent = `Q${idx+1}`;
+
+  // Passage
+  const passEl = document.getElementById('q-passage');
+  if (q.passage) {
+    passEl.textContent = q.passage;
+    passEl.style.display = 'block';
+  } else {
+    passEl.style.display = 'none';
+  }
+
+  // Question text
+  document.getElementById('q-text').textContent = q.question;
+
+  // Options
+  const letters = ['A','B','C'];
+  const optList = document.getElementById('options-list');
+  optList.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.onclick = () => selectAnswer(i);
+    btn.innerHTML = `<span class="opt-letter">${q.options.length === 3 ? ['T','F','?'][i] : letters[i] || String.fromCharCode(65+i)}</span><span>${opt}</span>`;
+    optList.appendChild(btn);
+  });
+
+  // Explanation
+  const expBox = document.getElementById('explanation-box');
+  expBox.classList.remove('show');
+  expBox.innerHTML = '';
+
+  // Nav
+  document.getElementById('btn-next').classList.remove('show');
+  document.getElementById('btn-skip').style.display = 'inline';
+
+  // Scroll
+  document.querySelector('.test-body').scrollTo(0,0);
+  window.scrollTo(0,0);
+}
+
+function selectAnswer(chosenIdx) {
+  if (STATE.answered) return;
+  STATE.answered = true;
+  STATE.answers[STATE.current] = chosenIdx;
+
+  const q = QUESTIONS[STATE.current];
+  const correct = chosenIdx === q.answer;
+  const optBtns = document.querySelectorAll('.option-btn');
+
+  optBtns.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.answer) btn.classList.add('correct');
+    if (i === chosenIdx && !correct) btn.classList.add('wrong');
+  });
+
+  // Explanation
+  const expBox = document.getElementById('explanation-box');
+  expBox.innerHTML = `
+    <div class="exp-header">
+      <div class="exp-icon ${correct?'correct':'wrong'}">${correct?'✓':'✗'}</div>
+      <span class="exp-label ${correct?'correct':'wrong'}">${correct?'CORRECT':'INCORRECT'}</span>
+    </div>
+    <div class="exp-text">${q.explanation}</div>
+  `;
+  expBox.classList.add('show');
+
+  document.getElementById('btn-next').classList.add('show');
+  document.getElementById('btn-skip').style.display = 'none';
+}
+
+function nextQuestion() {
+  const next = STATE.current + 1;
+  if (next >= QUESTIONS.length) { finishTest(); return; }
+  renderQuestion(next);
+}
+
+function skipQuestion() {
+  STATE.skipped.add(STATE.current);
+  STATE.answers[STATE.current] = null;
+  const next = STATE.current + 1;
+  if (next >= QUESTIONS.length) { finishTest(); return; }
+  renderQuestion(next);
+}
+
+function finishTest() {
+  clearInterval(STATE.timerInterval);
+  showResults();
+}
+
+// ═══════════════════════ RESULTS ═══════════════════════
+function showResults() {
+  document.getElementById('timeout-overlay').classList.remove('show');
+  showScreen('screen-results');
+
+  // Calculate scores
+  const trackScores = { numerical:{correct:0,total:0}, verbal:{correct:0,total:0}, abstract:{correct:0,total:0}, english:{correct:0,total:0} };
+  let totalCorrect = 0;
+
+  QUESTIONS.forEach((q, i) => {
+    const tm = trackScores[q.track];
+    tm.total++;
+    if (STATE.answers[i] === q.answer) {
+      tm.correct++;
+      totalCorrect++;
+    }
+  });
+
+  // Header
+  document.getElementById('res-score').textContent = totalCorrect;
+  document.getElementById('res-name').textContent = STATE.name;
+  document.getElementById('res-meta').textContent = `${STATE.role} · ${STATE.level} · ${new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})}`;
+
+  // Ring animation
+  const pct = totalCorrect / 100;
+  const circumference = 2 * Math.PI * 70; // r=70
+  setTimeout(() => {
+    document.getElementById('ring-fill').style.strokeDashoffset = circumference * (1 - pct);
+    document.getElementById('ring-fill').style.strokeDasharray = circumference;
+    // Update ring color based on score
+    if (totalCorrect >= 70) document.getElementById('ring-fill').style.stroke = '#b8f060';
+    else if (totalCorrect >= 50) document.getElementById('ring-fill').style.stroke = '#f0d060';
+    else document.getElementById('ring-fill').style.stroke = '#60d4f0';
+  }, 300);
+
+  // Track cards
+  const trackOrder = ['numerical','verbal','abstract','english'];
+  const trackResultsEl = document.getElementById('track-results');
+  trackResultsEl.innerHTML = '';
+  trackOrder.forEach(t => {
+    const ts = trackScores[t];
+    const tm = TRACK_META[t];
+    const pct = ts.total > 0 ? (ts.correct/ts.total*100) : 0;
+    const card = document.createElement('div');
+    card.className = 'track-card';
+    card.innerHTML = `
+      <div class="track-card-head">
+        <span class="track-card-name">${tm.label}</span>
+        <span class="track-card-score" style="color:${tm.color}">${ts.correct}/${ts.total}</span>
+      </div>
+      <div class="track-bar-outer">
+        <div class="track-bar-inner" style="width:0%;background:${tm.color}" data-pct="${pct}"></div>
+      </div>
+      <div class="track-card-correct">${pct.toFixed(0)}% accuracy</div>
+    `;
+    trackResultsEl.appendChild(card);
+  });
+  setTimeout(() => {
+    document.querySelectorAll('.track-bar-inner').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 400);
+
+  // Chart
+  buildChart(trackScores);
+
+  // Profile card
+  buildProfileCard(trackScores, totalCorrect);
+
+  // Submit to Google Sheets (silent, non-blocking)
+  submitToSheet(trackScores, totalCorrect);
+}
+
+// ═══════════════════════ GOOGLE SHEETS SUBMISSION ═══════════════════════
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxhTSFjGjT3xNroWa2rJLKLXkhNODFSOwyMI_Urlxvj_2-rhy0YNPabXhHRgbCC9dZ_aQ/exec';
+
+function submitToSheet(trackScores, totalCorrect) {
+  const secondsUsed = 3600 - STATE.secondsLeft;
+  const mins = Math.floor(secondsUsed / 60);
+  const secs = secondsUsed % 60;
+  const timeTaken = `${mins}m ${secs}s`;
+
+  const payload = {
+    name:      STATE.name,
+    email:     STATE.email,
+    role:      STATE.role,
+    level:     STATE.level,
+    numerical: trackScores.numerical.correct,
+    verbal:    trackScores.verbal.correct,
+    abstract:  trackScores.abstract.correct,
+    english:   trackScores.english.correct,
+    total:     totalCorrect,
+    timeTaken: timeTaken
+  };
+
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(() => {
+    // Fail silently — candidate experience is unaffected
+  });
+}
+
+function buildChart(trackScores) {
+  const ctx = document.getElementById('results-chart').getContext('2d');
+  const tracks = ['numerical','verbal','abstract','english'];
+  const data = tracks.map(t => {
+    const ts = trackScores[t];
+    return ts.total > 0 ? +(ts.correct/ts.total*100).toFixed(1) : 0;
+  });
+  const colors = tracks.map(t => TRACK_META[t].color);
+
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['Numerical','Verbal','Abstract','English'],
+      datasets: [{
+        label: 'Score %',
+        data: data,
+        backgroundColor: 'rgba(184,240,96,0.1)',
+        borderColor: '#b8f060',
+        borderWidth: 2,
+        pointBackgroundColor: colors,
+        pointBorderColor: colors,
+        pointRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          min: 0, max: 100,
+          ticks: { display: false, stepSize: 25 },
+          grid: { color: '#252825' },
+          angleLines: { color: '#252825' },
+          pointLabels: {
+            color: '#8a9688',
+            font: { family: "'Space Mono', monospace", size: 11 }
+          }
+        }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+}
+
+function buildProfileCard(trackScores, totalCorrect) {
+  const uid = 'CV1-' + Math.random().toString(36).substr(2,6).toUpperCase();
+  document.getElementById('pc-id').textContent = `CALLIBR · ${uid}`;
+  document.getElementById('pc-name').textContent = STATE.name;
+  document.getElementById('pc-role').textContent = STATE.role;
+  document.getElementById('pc-level').textContent = STATE.level;
+  document.getElementById('pc-date').textContent = new Date().toLocaleDateString('en-GB');
+
+  const scoresEl = document.getElementById('pc-scores');
+  const tracks = ['numerical','verbal','abstract','english'];
+  const abbr = { numerical:'NUM', verbal:'VRB', abstract:'ABS', english:'ENG' };
+  scoresEl.innerHTML = '';
+
+  tracks.forEach(t => {
+    const ts = trackScores[t];
+    const tm = TRACK_META[t];
+    const item = document.createElement('div');
+    item.className = 'profile-score-item';
+    item.innerHTML = `<span class="profile-score-val" style="color:${tm.color}">${ts.correct}<span style="font-size:14px;color:var(--text3)">/${ts.total}</span></span><span class="profile-score-track">${abbr[t]}</span>`;
+    scoresEl.appendChild(item);
+  });
+
+  // Add total
+  const totalItem = document.createElement('div');
+  totalItem.className = 'profile-score-item';
+  totalItem.innerHTML = `<span class="profile-score-val" style="font-size:26px">${totalCorrect}<span style="font-size:14px;color:var(--text3)">/100</span></span><span class="profile-score-track">TOTAL</span>`;
+}
+
+function copyProfile() {
+  const card = document.getElementById('profile-card');
+  const tracks = ['numerical','verbal','abstract','english'];
+  const trackScores = { numerical:{correct:0,total:0}, verbal:{correct:0,total:0}, abstract:{correct:0,total:0}, english:{correct:0,total:0} };
+  QUESTIONS.forEach((q,i) => {
+    if (STATE.answers[i] === q.answer) trackScores[q.track].correct++;
+    trackScores[q.track].total++;
+  });
+  const total = Object.values(trackScores).reduce((a,t)=>a+t.correct,0);
+  const text = `
+CALLIBR · Verified Practice Test Vol. 1
+────────────────────────────────
+Name:  ${STATE.name}
+Role:  ${STATE.role}
+Level: ${STATE.level}
+Date:  ${new Date().toLocaleDateString('en-GB')}
+────────────────────────────────
+SCORES (Raw)
+Numerical Reasoning:  ${trackScores.numerical.correct}/30
+Verbal Reasoning:     ${trackScores.verbal.correct}/25
+Abstract Reasoning:   ${trackScores.abstract.correct}/25
+English Proficiency:  ${trackScores.english.correct}/20
+────────────────────────────────
+TOTAL:  ${total}/100
+────────────────────────────────
+callibr.co · Skills-first hiring
+`.trim();
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = 'COPIED ✓';
+    setTimeout(() => btn.textContent = orig, 2000);
+  }).catch(() => {
+    prompt('Copy this profile card:', text);
+  });
+}
+
+function retakeTest() {
+  if (!confirm('Retake the test? All answers will be cleared.')) return;
+  STATE.current = 0;
+  STATE.answers = new Array(100).fill(null);
+  STATE.skipped = new Set();
+  STATE.secondsLeft = 3600;
+  STATE.answered = false;
+  clearInterval(STATE.timerInterval);
+  showScreen('screen-reg');
+}
+
+// ═══════════════════════ SCREEN MANAGER ═══════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// Init
+document.getElementById('ring-fill').style.strokeDasharray = 440;
+document.getElementById('ring-fill').style.strokeDashoffset = 440;
+</script>
+</body>
+</html>
