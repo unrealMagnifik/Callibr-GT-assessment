@@ -1273,12 +1273,12 @@ explanation:"Cannot Say. Critics raise concerns about superficiality and facilit
 
 // ── ABSTRACT REASONING (25Q) ──
 {id:56,track:"abstract",difficulty:"easy",
-question:"Number sequence: 2, 4, 8, 16, ___. Each term is double the previous. What is the next term?",
+question:"A number sequence: 2, 4, 8, 16, ___. What is the next number?",
 options:["24","32","18","20"],answer:1,
 explanation:"Geometric sequence with ratio ×2: 2→4→8→16→32. Trap A (24) adds the previous difference (8) instead of doubling. Always identify the operation type (additive vs multiplicative) before extending the sequence."},
 
 {id:57,track:"abstract",difficulty:"easy",
-question:"Letter sequence: A, C, E, G, ___. Each letter skips one letter of the alphabet. What comes next?",
+question:"A letter sequence follows a consistent pattern: A, C, E, G, ___. What comes next?",
 options:["H","I","J","K"],answer:1,
 explanation:"A(1)→C(3)→E(5)→G(7)→I(9). Each step adds 2 to the alphabetical position. Trap A (H) adds only 1. Trap C (J) adds 3. The pattern is +2 per step."},
 
@@ -1288,12 +1288,12 @@ options:["6","7","8","10"],answer:2,
 explanation:"Numbers 1–9 fill the grid sequentially. Position (3,2) = 8. Trap A (6) takes the last of Row 2. Trap D (10) extends past the 9-number grid. Sequential filling: 7, 8, 9 complete Row 3."},
 
 {id:59,track:"abstract",difficulty:"easy",
-question:"A right-pointing arrow (→) rotates 90° clockwise with each step. Position 1: → (right). Position 2: ↓ (down). Position 3: ← (left). Position 4: ?",
+question:"An arrow follows a rotation pattern: Position 1: → (right). Position 2: ↓ (down). Position 3: ← (left). Position 4: ?",
 options:["→ (right)","↓ (down)","↑ (up)","← (left)"],answer:2,
 explanation:"Each 90° CW rotation: Right→Down→Left→Up. Position 4 = Up (↑). Trap A (right) would be position 5 (full 360°). Trap D (left) was position 3. The four positions cycle: R→D→L→U→R..."},
 
 {id:60,track:"abstract",difficulty:"easy",
-question:"Shape pattern: ○ □ △ ○ □ △ ○ □ ___. The trio (circle, square, triangle) repeats. What is the missing 9th shape?",
+question:"A shape sequence: ○ □ △ ○ □ △ ○ □ ___. What is the missing shape?",
 options:["○ (circle)","□ (square)","△ (triangle)","◇ (diamond)"],answer:2,
 explanation:"The pattern cycles every 3 shapes: ○□△ | ○□△ | ○□___. Position 9 = 9 ÷ 3 = remainder 0 = last in cycle = △ (triangle). Trap B (□) would be position 8. Count position within the cycle."},
 
@@ -1313,12 +1313,12 @@ options:["●","■","★","◆"],answer:2,
 explanation:"Column 3 already has ■ (Row 1) and ● (Row 2). Each symbol must appear once per column, so Column 3, Row 3 = ★. Also verify Row 3: ● ■ ★ — each symbol appears exactly once. ✓"},
 
 {id:64,track:"abstract",difficulty:"medium",
-question:"Fibonacci sequence: 1, 1, 2, 3, 5, 8, 13, ___. Each term = sum of the two preceding terms. What is the next term?",
+question:"A number sequence: 1, 1, 2, 3, 5, 8, 13, ___. What is the next number?",
 options:["18","19","20","21"],answer:3,
 explanation:"8 + 13 = 21. Trap A (18) = 13+5. Trap B (19) and C (20) are arithmetic errors. The Fibonacci rule is strictly: current term = sum of the two immediately preceding terms."},
 
 {id:65,track:"abstract",difficulty:"medium",
-question:"Letter sequence moving backward: Z, X, V, T, R, ___. Each step moves back 2 positions in the alphabet. What comes next?",
+question:"A letter sequence: Z, X, V, T, R, ___. What comes next?",
 options:["P","Q","O","S"],answer:0,
 explanation:"Z(26)→X(24)→V(22)→T(20)→R(18)→P(16). Subtract 2 each step. R is the 18th letter; 18−2=16=P. Trap B (Q) subtracts 1. Trap C (O) subtracts 3."},
 
@@ -1338,17 +1338,17 @@ options:["11","13","12","15"],answer:1,
 explanation:"Row sum = 34. 16+3+2+? = 34 → 21+? = 34 → ? = 13. Trap A (11): subtracts from 32. Trap C (12): off by 1. Trap D (15): uses wrong row sum. Always check: sum of known values, subtract from target."},
 
 {id:69,track:"abstract",difficulty:"hard",
-question:"A sequence uses the rule: each term = previous term × (previous term − 1). Term 1: 3. Term 2: 3×2=6. Term 3: 6×5=?. What is Term 3?",
+question:"A number sequence follows a consistent rule. Term 1: 3. Term 2: 6. Term 3: ?. What is Term 3?",
 options:["18","24","30","36"],answer:2,
 explanation:"Term 3 = 6 × (6−1) = 6 × 5 = 30. Trap A (18) = 6×3. Trap B (24) = 6×4. The rule is n×(n−1), meaning each term multiplies by one less than itself. 6 multiplied by 5 = 30."},
 
 {id:70,track:"abstract",difficulty:"hard",
-question:"Input→Output table: 1→3, 2→7, 3→13, 4→21. The rule is output = n²+n+1. What is the output when input = 5?",
+question:"An input→output table follows a consistent rule: 1→3, 2→7, 3→13, 4→21. What is the output when input = 5?",
 options:["29","31","33","27"],answer:1,
 explanation:"n²+n+1: when n=5: 25+5+1=31. Verify pattern: 1+1+1=3✓, 4+2+1=7✓, 9+3+1=13✓, 16+4+1=21✓. Trap A (29) uses n²+n−1. Trap C (33) uses n²+n+3. Find the formula by testing candidate rules."},
 
 {id:71,track:"abstract",difficulty:"easy",
-question:"Paired sequence: (1,2), (3,6), (5,10), (7,?). In each pair, the second number is double the first. The first numbers are odd: 1,3,5,7. What is the missing number?",
+question:"A paired number sequence: (1,2), (3,6), (5,10), (7,?). What is the missing number?",
 options:["12","14","16","8"],answer:1,
 explanation:"7×2=14. First numbers: 1,3,5,7 (odd numbers). Second: 2,6,10,14 (also a sequence: +4,+4,+4). Both rules confirm 14. Trap A (12) adds 2 to the previous second number incorrectly: 10+2=12."},
 
@@ -1571,7 +1571,6 @@ function updateTimerDisplay() {
 function renderQuestion(idx) {
   if (idx >= QUESTIONS.length) { finishTest(); return; }
   STATE.current = idx;
-  STATE.answered = false;
   const q = QUESTIONS[idx];
   const tm = TRACK_META[q.track];
 
@@ -1603,26 +1602,48 @@ function renderQuestion(idx) {
   // Question text
   document.getElementById('q-text').textContent = q.question;
 
-  // Options
-  const letters = ['A','B','C'];
+  // Options — restore state if already answered
+  const previousAnswer = STATE.answers[idx];
+  const wasAnswered = previousAnswer !== null;
   const optList = document.getElementById('options-list');
   optList.innerHTML = '';
   q.options.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
-    btn.onclick = () => selectAnswer(i);
-    btn.innerHTML = `<span class="opt-letter">${q.options.length === 3 ? ['T','F','?'][i] : letters[i] || String.fromCharCode(65+i)}</span><span>${opt}</span>`;
+    if (wasAnswered) {
+      btn.disabled = true;
+      if (i === q.answer) btn.classList.add('correct');
+      else if (i === previousAnswer) btn.classList.add('wrong');
+    } else {
+      btn.onclick = () => selectAnswer(i);
+    }
+    const label = q.options.length === 3 ? ['T','F','?'][i] : String.fromCharCode(65+i);
+    btn.innerHTML = `<span class="opt-letter">${label}</span><span>${opt}</span>`;
     optList.appendChild(btn);
   });
 
-  // Explanation
+  // Explanation — restore if already answered
   const expBox = document.getElementById('explanation-box');
-  expBox.classList.remove('show');
-  expBox.innerHTML = '';
-
-  // Nav
-  document.getElementById('btn-next').classList.remove('show');
-  document.getElementById('btn-skip').style.display = 'inline';
+  if (wasAnswered) {
+    STATE.answered = true;
+    const correct = previousAnswer === q.answer;
+    expBox.innerHTML = `
+      <div class="exp-header">
+        <div class="exp-icon ${correct?'correct':'wrong'}">${correct?'✓':'✗'}</div>
+        <span class="exp-label ${correct?'correct':'wrong'}">${correct?'CORRECT':'INCORRECT'}</span>
+      </div>
+      <div class="exp-text">${q.explanation}</div>
+    `;
+    expBox.classList.add('show');
+    document.getElementById('btn-next').classList.add('show');
+    document.getElementById('btn-skip').style.display = 'none';
+  } else {
+    STATE.answered = false;
+    expBox.classList.remove('show');
+    expBox.innerHTML = '';
+    document.getElementById('btn-next').classList.remove('show');
+    document.getElementById('btn-skip').style.display = 'inline';
+  }
 
   // Scroll
   document.querySelector('.test-body').scrollTo(0,0);
