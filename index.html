@@ -1328,7 +1328,7 @@ options:["10","12","24","18"],answer:1,
 explanation:"Centre = (3+5+7+9)/2 = 24/2 = 12. Trap A (10): previous centre value. Trap C (24): forgets to divide by 2. Trap D (18): sums only three surrounding values. Always sum all four surrounding values, then apply the rule."},
 
 {id:67,track:"abstract",difficulty:"medium",
-question:"A sequence alternates between two operations: +3 then ×2. Starting at 1: 1, (+3)→4, (×2)→8, (+3)→11, (×2)→22, (+3)→25, ___. What is the next term?",
+question:"A number sequence follows a consistent pattern: 1, 4, 8, 11, 22, 25, ___. What is the next term?",
 options:["28","50","27","52"],answer:1,
 explanation:"After 25, the operation is ×2 (alternating: +3, ×2, +3, ×2...). 25 × 2 = 50. Trap A (28) applies +3 again. To track the pattern, mark each step: step 1=+3, step 2=×2, step 3=+3, etc."},
 
@@ -1368,7 +1368,7 @@ options:["9","12","10","8"],answer:1,
 explanation:"Bottom: 2, 3, 4. Middle: (2+3)=5, (3+4)=7. Top: 5+7=12. Each level sums adjacent pairs from the level below. Trap A (9) = 2+3+4. Trap C (10) = 3+7 or 5+5. Trap D (8) = 2+3+3."},
 
 {id:75,track:"abstract",difficulty:"hard",
-question:"A sequence adds 4 each step and wraps around at 12 (modulo 12, where 0 becomes 12): 1, 5, 9, 1, 5, 9... Wait — revised: sequence adds 4, wrapping at 10 (subtract 10 if result exceeds 10): 1, 5, 9, 3, 7, 11, ?. After 11, add 4: 15. 15−10=5? No, 15−12=3. Use: wrap at 12, subtract 12. After 11: 11+4=15→15−12=3. But 3 already appeared. This is the pattern cycling. What is the next term after 11?",
+question:"A number sequence adds 4 each step, wrapping back when it exceeds 12: 1, 5, 9, 1, 5, 9, 1, 5, 9... Using that same rule on this sequence: 1, 5, 9, 3, 7, 11, ___. What comes next?",
 options:["3","5","15","13"],answer:0,
 explanation:"The sequence adds 4 and wraps at 12 (if result exceeds 12, subtract 12). After 11: 11+4=15. 15>12, so 15−12=3. The answer is 3. This is modular arithmetic: the sequence 1,5,9,3,7,11 cycles with period 6 under +4 mod 12."},
 
